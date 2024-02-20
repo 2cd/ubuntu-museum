@@ -72,20 +72,20 @@ if ((year == 0)) {
     year=2024
 }
 
-
 for series ver (${(kv)ver_map}) {
     info "%F{blue}key%f:" $series "\t%F{blue}value%f:" $ver
 
     title_case=$series
     title_case[1]=${(U)series[1]}
     debug title_case: $title_case
+    new_file=$ver-$series.yml
 
     args=(
         --regexp-extended
 
-        # /dev.yml -> /$series.yml (e.g., /jammy.yml)
+        # /dev.yml -> /$ver-$series.yml (e.g., /22.04-jammy.yml)
         --expression
-        "s@/dev(\.yml)@/$series\1@g"
+        "s@/dev\.yml@/$new_file@g"
 
 
         # Ubuntu-Devel -> Ubuntu-${series.to_title_case()} (e.g., Ubuntu-Jammy.yml)
@@ -129,7 +129,7 @@ for series ver (${(kv)ver_map}) {
             --expression
             # 
             # "on":{"push":{"paths":[".github\/workflows\/sid.yml"]}}
-            "1a\on: {\"push\":{\"paths\":[\".github/workflows/${series}.yml\"]}}"
+            "1a\on: { \"push\": { \"paths\": [\".github/workflows/${series}.yml\" ] } }"
         )
     }
 
@@ -141,5 +141,5 @@ for series ver (${(kv)ver_map}) {
     args+=$tmpl
 
     debug "%F{green}sed %f$args"
-    sed $args > $ver.yml
+    sed $args > $new_file
 }

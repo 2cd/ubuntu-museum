@@ -1,6 +1,5 @@
 name: build & push (Ubuntu-Warty)
-# 2024-02-20 15:46:02.950484925+00:00
-on: { "push": { "paths": [".github/workflows/warty.yml"] } }
+on: { "push": { "paths": [".github/workflows/warty.yml" ] } }
 
 env:
   DEBIAN_FRONTEND: noninteractive
