@@ -1,5 +1,5 @@
 name: build & push (Ubuntu-Warty)
-on: { "push": { "paths": [".github/workflows/warty.yml" ] } }
+on: { "push": { "paths": [".github/workflows/4.10-warty.yml" ] } }
 
 env:
   DEBIAN_FRONTEND: noninteractive

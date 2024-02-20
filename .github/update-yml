@@ -79,13 +79,14 @@ for series ver (${(kv)ver_map}) {
     title_case[1]=${(U)series[1]}
     debug title_case: $title_case
     new_file=$ver-$series.yml
+    info new_file: $new_file
 
     args=(
         --regexp-extended
 
         # /dev.yml -> /$ver-$series.yml (e.g., /22.04-jammy.yml)
         --expression
-        "s@/dev\.yml@/$new_file@g"
+        "s@/devel\.yml@/$new_file@g"
 
 
         # Ubuntu-Devel -> Ubuntu-${series.to_title_case()} (e.g., Ubuntu-Jammy.yml)
@@ -129,7 +130,7 @@ for series ver (${(kv)ver_map}) {
             --expression
             # 
             # "on":{"push":{"paths":[".github\/workflows\/sid.yml"]}}
-            "1a\on: { \"push\": { \"paths\": [\".github/workflows/${series}.yml\" ] } }"
+            "1a\on: { \"push\": { \"paths\": [\".github/workflows/$new_file\" ] } }"
         )
     }
 
