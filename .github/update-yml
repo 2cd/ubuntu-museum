@@ -1,0 +1,145 @@
+#!/bin/zsh -fe
+cd ${0:h}/workflows
+log_lv=$UPDATE_YML_LOG
+tmpl=devel.yml
+
+local -A ver_map=(
+    warty    "4.10"
+    # hoary    "5.04"
+    # breezy   "5.10"
+    # dapper   "6.06"
+    # edgy     "6.10"
+    # feisty   "7.04"
+    # gutsy    "7.10"
+    # hardy    "8.04"
+    # intrepid "8.10"
+    # jaunty   "9.04"
+    # karmic   "9.10"
+    # lucid    "10.04"
+    # maverick "10.10"
+    # natty    "11.04"
+    # oneiric  "11.10"
+    # precise  "12.04"
+    # quantal  "12.10"
+    # raring   "13.04"
+    # saucy    "13.10"
+    # trusty   "14.04"
+    # utopic   "14.10"
+    # vivid    "15.04"
+    # wily     "15.10"
+    # xenial   "16.04"
+    # yakkety  "16.10"
+    # zesty    "17.04"
+    # artful   "17.10"
+    # bionic   "18.04"
+    # cosmic   "18.10"
+    # disco    "19.04"
+    # eoan     "19.10"
+    # focal    "20.04"
+    # groovy   "20.10"
+    # hirsute  "21.04"
+    # impish   "21.10"
+    # jammy    "22.04"
+    # kinetic  "22.10"
+    # lunar    "23.04"
+    # mantic   "23.10"
+    # noble    "24.04"
+)
+# --------------
+error() {
+    print >&2 -P "%B%F{red}[ERROR]%b%f $*"
+}
+info() {
+    print >&2 -P "%F{cyan}[INFO]%f $*"
+}
+debug() {
+    case $log_lv {
+        (debug|trace) ;;
+        (*) return 0 ;;
+    }
+    print >&2 -Pr "%F{blue}[DEBUG]%f $*"
+}
+
+io::Error::not_found() {
+    error "I/O Error, '$1' was not found."
+}
+# --------------
+debug $(local -p ver_map)
+
+integer year=$(date +%Y)
+debug year: $year
+if ((year == 0)) {
+    year=2024
+}
+
+
+for series ver (${(kv)ver_map}) {
+    info "%F{blue}key%f:" $series "\t%F{blue}value%f:" $ver
+
+    title_case=$series
+    title_case[1]=${(U)series[1]}
+    debug title_case: $title_case
+
+    args=(
+        --regexp-extended
+
+        # /dev.yml -> /$series.yml (e.g., /jammy.yml)
+        --expression
+        "s@/dev(\.yml)@/$series\1@g"
+
+
+        # Ubuntu-Devel -> Ubuntu-${series.to_title_case()} (e.g., Ubuntu-Jammy.yml)
+        --expression
+        "s@(Ubuntu)-Devel@\1-$title_case@g"
+
+        # .DEVEL_ -> .${series.to_upper_case()}_ (e.g., .JAMMY_)
+        --expression
+        "s@(\.)DEVEL_@\1${(U)series}_@g"
+
+        # VER: unstable -> VER: $series
+        --expression
+        "s@(^\s+VER:)\s*unstable\$@\1 $series@g"
+
+        # delete line 
+        --expression
+        '/auto-task.build-time\s+=/d'
+
+        --expression
+        '/on:\s*\{\s*("push"|"schedule"):/d'
+    )
+
+    # Warty_MATRIX = {"arch":["amd64", "i386", "powerpc"]}
+    # Warty_ARCHS = "amd64" "i386" "powerpc"
+    # Warty_CMD = get-ctr --os ubuntu --ver 4.10
+
+    unset cron
+    # TODO: +cron task
+
+    if (($+cron)) {
+        debug cron: $cron
+        # args.push()
+        args+=(
+            --expression
+            "1a\on: {\"schedule\": [{\"cron\": '$cron'}]}"
+        )
+    }
+
+    if ! (($+cron)) {
+        args+=(
+            --expression
+            # 
+            # "on":{"push":{"paths":[".github\/workflows\/sid.yml"]}}
+            "1a\on: {\"push\":{\"paths\":[\".github/workflows/${series}.yml\"]}}"
+        )
+    }
+
+    if [[ ! -e $tmpl ]] {
+        io::Error::not_found $tmpl
+        exit 1
+    }
+    # Template file 
+    args+=$tmpl
+
+    debug "%F{green}sed %f$args"
+    sed $args > $ver.yml
+}
