@@ -82,7 +82,7 @@ fn main() -> anyhow::Result<()> {
 
     for (ron_file, ref file_content, gh_repo) in [
         (uuu_os_file, ubuntu_ron, "ubuntu-museum"),
-        (deb_os_file, debian_ron, "debian-museum"),
+        // (deb_os_file, debian_ron, "debian-museum"),
     ] {
         map.clear();
         let cfg = ron::from_str::<Cfg>(file_content)?;
@@ -132,7 +132,7 @@ fn main() -> anyhow::Result<()> {
 /// Similarly:
 ///
 /// ```sh
-/// print "%s" $json_data | gh api \
+/// printf "%s" $json_data | gh api \
 ///    --method POST \
 ///    -H "Accept: application/vnd.github+json" \
 ///    -H "X-GitHub-Api-Version: 2022-11-28" \
