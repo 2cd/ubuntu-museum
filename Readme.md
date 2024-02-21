@@ -245,6 +245,7 @@ systemd-nspawn -D kinetic-arm64 -E LANG=$LANG
 Once inside the container, we can configure the language environment:
 
 ```sh
+apt update
 apt install locales
 dpkg-reconfigure locales
 ```
