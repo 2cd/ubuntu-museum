@@ -146,3 +146,117 @@
 >
 > - [Debian Museum](https://github.com/2cd/debian-museum/)
 > - [distro-info-data/ubuntu.csv](https://debian.pages.debian.net/distro-info-data/ubuntu.csv)
+
+## Container
+
+### docker
+
+#### preparations
+
+Step1: install docker
+
+```sh
+# run apt as root (e.g., sudo apt update)
+apt update
+apt install docker.io
+```
+
+Step2 (Optional): add the current user to the docker user group
+
+```sh
+# run it on POSIX-compliant shell (e.g., bash, zsh, ash)
+# run adduser as root (i.e., +sudo/+doas)
+adduser $(id -un) docker
+```
+
+#### run
+
+Take ubuntu 24.04 for example.
+
+We can create a disposable container:
+
+```sh
+docker run -it --rm -e LANG=$LANG ghcr.io/2cd/ubuntu:24.04
+```
+
+We can also specify the architecture (platform) of the container, but we need to install qemu-user.
+
+```sh
+# run apt as root (i.e., +sudo/doas)
+apt install qemu-user-static
+```
+
+Try riscv64:
+
+```sh
+docker run -it --rm --platform linux/riscv64 ghcr.io/2cd/ubuntu:24.04
+```
+
+Note: The above is only suitable for simple cases, in more cases we will use use it as a base container image and use it with other services.
+
+---
+
+Here's a snippet of the configuration:
+
+```yaml
+name: Ubuntu
+codename: Noble Numbat
+series: noble
+version: '24.04'
+oci-platforms:
+    - linux/386
+    - linux/amd64
+    - linux/arm/v7
+    - linux/arm64
+    - linux/ppc64le
+    - linux/riscv64
+    - linux/s390x
+```
+
+If you want more information, go to [Github Releases](https://github.com/2cd/ubuntu-museum/releases).
+
+### nspawn
+
+To use systemd-nspawn, we need to install it.
+
+```sh
+# run apt as root (i.e., +sudo/doas)
+apt install systemd-container
+```
+
+Next, let's take 22.04 arm64 for example.
+
+Note: This is a version that is already EOL. In most cases, you should use the ongoing maintenance version, not the EOL.
+
+```sh
+mkdir -p ./tmp/kinetic-arm64
+cd tmp
+
+# We need to download a file of size 26.15 MiB.
+curl -LO 'https://github.com/2cd/ubuntu-museum/releases/download/22.10/22.10_kinetic_arm64.tar.zst'
+
+# run gnutar or bsdtar (libarchive-tools) as root (i.e., +sudo/+doas)
+tar -C kinetic-arm64 -xf "22.10_kinetic_arm64.tar.zst"
+
+# run nspawn as root (i.e., +sudo/+doas)
+systemd-nspawn -D kinetic-arm64 -E LANG=$LANG
+```
+
+Once inside the container, we can configure the language environment:
+
+```sh
+apt install locales
+dpkg-reconfigure locales
+```
+
+### Other notes
+
+1. Actually, compared to the official Ubuntu Docker image, it does not have any particularly great advantages. One significant difference compared to the official one is that it is not as streamlined. This can be seen as both an advantage and a disadvantage. In many cases, being streamlined can reduce the size it occupies. However, for certain purposes, like graphical user interfaces, being too streamlined may cause issues.
+
+2. In modern operating systems (Linux kernel: 6.x), running some ancient systems (in containers, not virtual machines) may cause issues.
+
+For example, Warty (i386, 4.10):
+
+```sh
+Inconsistency detected by ld.so: rtld.c: 1192: dl_main: Assertion `(void *) ph->p_vaddr == _rtld_local._dl_sysinfo_dso' failed!
+```
