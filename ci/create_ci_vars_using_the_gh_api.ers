@@ -1,0 +1,230 @@
+#!/usr/bin/env rust-script
+//! This script calls the gh api to automatically generate the variables needed for the ci.
+//!
+//! It is for project administrators and you should not run it.
+//!
+//! ```cargo
+//! [dependencies]
+//! anyhow = "1.0.80"
+//! ron = "0.8.1"
+//! serde = { version = "1.0.197", features = ["derive"] }
+//! serde_json = "1.0.114"
+//! typed-builder = "0.18.1"
+//! ```
+//
+
+/// If true, create vars (`--method POST`). If false, update vars (`--method PATCH`).
+const CREATE_VARS: bool = true;
+
+use anyhow::{bail, Context};
+use ron::ser::PrettyConfig;
+use serde::{Deserialize, Serialize};
+use std::{
+    collections::BTreeMap,
+    env,
+    ffi::OsStr,
+    fs,
+    io::{self, Write},
+    path::Path,
+    process::{Command, ExitStatus, Stdio},
+};
+use typed_builder::TypedBuilder;
+
+#[derive(TypedBuilder, Debug, Serialize)]
+struct CI {
+    // #[builder(setter(into))]
+    // name: String,
+    #[builder(setter(into))]
+    ver: String,
+
+    #[builder(setter(into))]
+    archs: String,
+    matrix: MatrixArch,
+}
+
+#[derive(Debug, Serialize)]
+struct MatrixArch {
+    arch: Vec<String>,
+}
+
+#[derive(Debug, Deserialize)]
+struct Cfg {
+    os: Vec<OsCfg>,
+}
+
+#[derive(Debug, Deserialize)]
+struct OsCfg {
+    series: String,
+    #[serde(rename = "deb-architectures")]
+    deb_architectures: Vec<String>,
+    version: String,
+}
+
+#[derive(TypedBuilder, Debug, Serialize)]
+#[builder(field_defaults(setter(into)))]
+struct PostData {
+    name: String,
+    value: String,
+}
+
+fn main() -> anyhow::Result<()> {
+    if env::var("DEBEMAIL")? != "m@tmoe.me" {
+        bail!("You should NOT run it")
+    }
+    set_workdir()?;
+
+    let (debian_ron, ubuntu_ron) = get_ron_content()?;
+    let (deb_os_file, uuu_os_file) = get_os_ron_filename()?;
+
+    let mut map = BTreeMap::new();
+
+    for (ron_file, ref file_content, gh_repo) in [
+        (uuu_os_file, ubuntu_ron, "ubuntu-museum"),
+        (deb_os_file, debian_ron, "debian-museum"),
+    ] {
+        map.clear();
+        let cfg = ron::from_str::<Cfg>(file_content)?;
+
+        for os in cfg.os {
+            let arch_vec = os.deb_architectures;
+            let series = os.series.as_str();
+
+            let mut matrix_arch = arch_vec.to_owned();
+            if series == "sid" {
+                matrix_arch.retain(|x| x != "loong64")
+            }
+
+            let value = CI::builder()
+                .archs(arch_vec.join("  "))
+                .ver(os.version)
+                .matrix(MatrixArch { arch: matrix_arch })
+                .build();
+
+            let post_data = PostData::builder()
+                .name(format!("{series}_json").to_ascii_uppercase())
+                .value(serde_json::to_string(&value)?)
+                .build();
+
+            run_gh(&post_data, gh_repo)?;
+
+            map.insert(series.to_owned(), value);
+        }
+        let ron_ser_cfg = PrettyConfig::default().depth_limit(2);
+        let ron_str = ron::ser::to_string_pretty(&map, ron_ser_cfg)?;
+
+        fs::write(ron_file, ron_str)?;
+    }
+
+    Ok(())
+}
+
+/// This function generates command line arguments & json_data(stdin) to gh, and run the `gh` command.
+///
+/// Similarly:
+///
+/// ```sh
+/// print "%s" $json_data | gh api \
+///    --method POST \
+///    -H "Accept: application/vnd.github+json" \
+///    -H "X-GitHub-Api-Version: 2022-11-28" \
+///    /repos/2cd/ubuntu-museum/actions/variables \
+///    --input -
+/// ```
+fn run_gh(post_data: &PostData, repo_name: &str) -> anyhow::Result<()> {
+    let repository = if CREATE_VARS {
+        format!("/repos/2cd/{repo_name}/actions/variables")
+    } else {
+        format!(
+            "/repos/2cd/{repo_name}/actions/variables/{}",
+            post_data.name
+        )
+    };
+
+    let args = [
+        "api",
+        "--method",
+        if CREATE_VARS { "POST" } else { "PATCH" },
+        "-H",
+        "Accept: application/vnd.github+json",
+        "-H",
+        "X-GitHub-Api-Version: 2022-11-28",
+        &repository,
+        "--input",
+        "-",
+    ];
+
+    let data_str = serde_json::to_string(&post_data)?;
+    eprintln!("cmd: gh, args: {args:#?}\n post_data: {data_str}");
+    let data_bytes = data_str.as_bytes();
+
+    if let Err(e) = run("gh", &args, data_bytes) {
+        eprintln!("Failed to run `gh`(api ...). Error: {e}. Retrying ...");
+        run("gh", &args, data_bytes)?;
+    }
+
+    Ok(())
+}
+
+fn get_os_ron_filename() -> Result<(&'static str, &'static str), anyhow::Error> {
+    const DEB: &str = "../debian-museum-ci/assets/os.ron";
+    const UUU: &str = "ci/os.ron";
+
+    let deb_os_file = Path::new(DEB);
+    let uuu_os_file = Path::new(UUU);
+
+    if [deb_os_file.parent(), uuu_os_file.parent()]
+        .iter()
+        .all(|f| f.is_some_and(|x| !x.exists()))
+    {
+        bail!(r#"parent("os.ron") was not found"#)
+    }
+
+    Ok((DEB, UUU))
+}
+
+fn set_workdir() -> Result<(), io::Error> {
+    if env::current_dir()?.ends_with("ci") {
+        env::set_current_dir("..")?
+    };
+    Ok(())
+}
+
+fn get_ron_content() -> Result<(String, String), anyhow::Error> {
+    let cfg_path = Path::new("../debian-museum/crates/get-ctr/assets/debootstrap/");
+    let cfg_dir = cfg_path
+        .canonicalize()
+        .with_context(|| format!("{cfg_path:?} was not found!"))?;
+    dbg!(&cfg_dir);
+
+    let debian_ron = fs::read_to_string(cfg_dir.join("debian.ron"))
+        .context("Failed to open debian-museum::debian.ron")?;
+    // dbg!(&debian_ron);
+
+    let ubuntu_ron = fs::read_to_string(cfg_dir.join("ubuntu.ron"))?;
+    if ubuntu_ron.trim().is_empty() {
+        panic!("Empty ubuntu ron configuration")
+    }
+    Ok((debian_ron, ubuntu_ron))
+}
+
+/// runs the process and specify stdin
+///
+/// This is equivalent to: `print stdin_data | cmd args`
+fn run<A, S>(cmd: S, args: &[A], stdin_data: &[u8]) -> io::Result<ExitStatus>
+where
+    A: AsRef<OsStr>,
+    S: AsRef<OsStr>,
+{
+    let mut child = Command::new(cmd)
+        .args(args)
+        .stdin(Stdio::piped())
+        .spawn()?;
+
+    child
+        .stdin
+        .as_mut()
+        .ok_or_else(|| io::Error::new(io::ErrorKind::Other, "Failed to get stdin"))?
+        .write_all(stdin_data)?;
+
+    child.wait()
+}

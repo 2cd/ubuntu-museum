@@ -1,20 +1,18 @@
-name: build & push (Ubuntu-Warty)
-on: { "push": { "paths": [".github/workflows/4.10-warty.yml" ] } }
+name: build & push (Ubuntu-Warty, 4.10)
+on: { "push": { "paths": [ ".github/workflows/4.10-warty.yml" ] } }
 
 env:
   DEBIAN_FRONTEND: noninteractive
   GET_CTR_LOG: debug
   ZSTD_LV: 18
-  OS: ${{vars.OS}}
-  VER: warty
-  ARCHS: ${{vars.WARTY_ARCHS}}
-  BUILD_CMD: ${{vars.WARTY_CMD}}
+  ARCHS: ${{ fromJson(vars.WARTY_JSON).archs }}
+  BUILD_CMD: get-ctr --os ${{vars.OS}} --ver ${{fromJson(vars.WARTY_JSON).ver}}
 
 jobs:
   build:
     strategy:
       fail-fast: true
-      matrix: ${{fromJson(vars.WARTY_MATRIX)}}
+      matrix: ${{ fromJson(vars.WARTY_JSON).matrix }}
     runs-on: ubuntu-latest
 
     steps:

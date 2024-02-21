@@ -6,16 +6,14 @@ env:
   DEBIAN_FRONTEND: noninteractive
   GET_CTR_LOG: debug
   ZSTD_LV: 18
-  OS: ${{vars.OS}}
-  VER: unstable
-  ARCHS: ${{vars.DEVEL_ARCHS}}
-  BUILD_CMD: ${{vars.DEVEL_CMD}}
+  ARCHS: ${{ fromJson(vars.DEVEL_JSON).archs }}
+  BUILD_CMD: get-ctr --os ${{vars.OS}} --ver ${{fromJson(vars.DEVEL_JSON).ver}}
 
 jobs:
   build:
     strategy:
       fail-fast: true
-      matrix: ${{fromJson(vars.DEVEL_MATRIX)}}
+      matrix: ${{ fromJson(vars.DEVEL_JSON).matrix }}
     runs-on: ubuntu-latest
 
     steps:
