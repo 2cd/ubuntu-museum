@@ -11,10 +11,11 @@ panic() {
     error $*
     exit 1
 }
+
+# TODO: +kali, +mint
 case $OS {
     (debian) tmpl="sid.yml";;
     (ubuntu) tmpl="devel.yml" ;;
-    (debian|ubuntu) ;;
     (*) panic The first argument can only be debian or ubuntu.
 }
 # ------------
