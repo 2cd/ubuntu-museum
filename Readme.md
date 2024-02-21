@@ -239,6 +239,7 @@ curl -LO 'https://github.com/2cd/ubuntu-museum/releases/download/22.10/22.10_kin
 tar -C kinetic-arm64 -xf "22.10_kinetic_arm64.tar.zst"
 
 # run nspawn as root (i.e., +sudo/+doas)
+# On pwsh, $LANG -> $env:LANG
 systemd-nspawn -D kinetic-arm64 -E LANG=$LANG
 ```
 
