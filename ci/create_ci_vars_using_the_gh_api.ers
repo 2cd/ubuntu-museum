@@ -14,7 +14,9 @@
 //
 
 /// If true, create vars (`--method POST`). If false, update vars (`--method PATCH`).
-const CREATE_VARS: bool = true;
+const CREATE_VARS: bool = false;
+
+const RUN_GH: bool = true;
 
 use anyhow::{bail, Context};
 use ron::ser::PrettyConfig;
@@ -96,7 +98,12 @@ fn main() -> anyhow::Result<()> {
 
             let value = CI::builder()
                 .archs(arch_vec.join("  "))
-                .ver(os.version)
+                .ver(
+                    os.version
+                        .split_ascii_whitespace()
+                        .next()
+                        .expect("Invalid version"),
+                )
                 .matrix(MatrixArch { arch: matrix_arch })
                 .build();
 
@@ -105,7 +112,9 @@ fn main() -> anyhow::Result<()> {
                 .value(serde_json::to_string(&value)?)
                 .build();
 
-            run_gh(&post_data, gh_repo)?;
+            if RUN_GH {
+                run_gh(&post_data, gh_repo)?;
+            }
 
             map.insert(series.to_owned(), value);
         }

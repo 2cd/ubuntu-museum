@@ -5,7 +5,7 @@
         matrix: (arch: ["s390x", "ppc64el", "i386", "armhf", "arm64", "amd64"]),
     ),
     "bionic": (
-        ver: "18.04 LTS",
+        ver: "18.04",
         archs: "s390x  ppc64el  i386  armhf  arm64  amd64",
         matrix: (arch: ["s390x", "ppc64el", "i386", "armhf", "arm64", "amd64"]),
     ),
@@ -20,7 +20,7 @@
         matrix: (arch: ["s390x", "ppc64el", "i386", "armhf", "arm64", "amd64"]),
     ),
     "dapper": (
-        ver: "6.06 LTS",
+        ver: "6.06",
         archs: "amd64  i386  powerpc  sparc  hppa",
         matrix: (arch: ["amd64", "i386", "powerpc", "sparc", "hppa"]),
     ),
@@ -50,7 +50,7 @@
         matrix: (arch: ["sparc", "powerpc", "i386", "hppa", "amd64", "lpia"]),
     ),
     "focal": (
-        ver: "20.04 LTS",
+        ver: "20.04",
         archs: "s390x  riscv64  ppc64el  i386  armhf  arm64  amd64",
         matrix: (arch: ["s390x", "riscv64", "ppc64el", "i386", "armhf", "arm64", "amd64"]),
     ),
@@ -65,7 +65,7 @@
         matrix: (arch: ["powerpc", "lpia", "i386", "hppa", "amd64", "lpia"]),
     ),
     "hardy": (
-        ver: "8.04 LTS",
+        ver: "8.04",
         archs: "armhf  armel  sparc  powerpc  i386  hppa  amd64  lpia",
         matrix: (arch: ["armhf", "armel", "sparc", "powerpc", "i386", "hppa", "amd64", "lpia"]),
     ),
@@ -90,7 +90,7 @@
         matrix: (arch: ["armel", "hppa", "sparc", "powerpc", "i386", "amd64", "lpia"]),
     ),
     "jammy": (
-        ver: "22.04 LTS",
+        ver: "22.04",
         archs: "s390x  riscv64  ppc64el  i386  armhf  arm64  amd64",
         matrix: (arch: ["s390x", "riscv64", "ppc64el", "i386", "armhf", "arm64", "amd64"]),
     ),
@@ -110,7 +110,7 @@
         matrix: (arch: ["s390x", "riscv64", "ppc64el", "i386", "armhf", "arm64", "amd64"]),
     ),
     "lucid": (
-        ver: "10.04 LTS",
+        ver: "10.04",
         archs: "armhf  sparc  powerpc  i386  armel  amd64",
         matrix: (arch: ["armhf", "sparc", "powerpc", "i386", "armel", "amd64"]),
     ),
@@ -135,7 +135,7 @@
         matrix: (arch: ["armhf", "powerpc", "i386", "armel", "amd64"]),
     ),
     "noble": (
-        ver: "24.04 LTS",
+        ver: "24.04",
         archs: "s390x  riscv64  ppc64el  i386  armhf  arm64  amd64",
         matrix: (arch: ["s390x", "riscv64", "ppc64el", "i386", "armhf", "arm64", "amd64"]),
     ),
@@ -145,7 +145,7 @@
         matrix: (arch: ["armhf", "powerpc", "i386", "armel", "amd64"]),
     ),
     "precise": (
-        ver: "12.04 LTS",
+        ver: "12.04",
         archs: "powerpc  i386  armhf  armel  amd64",
         matrix: (arch: ["powerpc", "i386", "armhf", "armel", "amd64"]),
     ),
@@ -165,7 +165,7 @@
         matrix: (arch: ["powerpc", "i386", "armhf", "amd64", "arm64"]),
     ),
     "trusty": (
-        ver: "14.04 LTS",
+        ver: "14.04",
         archs: "ppc64el  powerpc  i386  armhf  arm64  amd64",
         matrix: (arch: ["ppc64el", "powerpc", "i386", "armhf", "arm64", "amd64"]),
     ),
@@ -190,7 +190,7 @@
         matrix: (arch: ["i386", "ppc64el", "armhf", "amd64", "arm64", "powerpc"]),
     ),
     "xenial": (
-        ver: "16.04 LTS",
+        ver: "16.04",
         archs: "s390x  ppc64el  powerpc  i386  armhf  arm64  amd64",
         matrix: (arch: ["s390x", "ppc64el", "powerpc", "i386", "armhf", "arm64", "amd64"]),
     ),
