@@ -179,7 +179,7 @@ We can create a disposable container:
 docker run -it --rm -e LANG=$LANG ghcr.io/2cd/ubuntu:24.04
 ```
 
-We can also specify the architecture (platform) of the container, but we need to install qemu-user.
+We can also specify the architecture (platform) of the container, but we need to install `qemu-user-static` fisrst. It will automatically configure `binfmt_misc` for us.
 
 ```sh
 # run apt as root (i.e., +sudo/doas)
@@ -224,7 +224,7 @@ To use systemd-nspawn, we need to install it.
 apt install systemd-container
 ```
 
-Next, let's take 22.04 arm64 for example.
+Next, let's take 22.10 arm64 for example.
 
 Note: This is a version that is already EOL. In most cases, you should use the ongoing maintenance version, not the EOL.
 
