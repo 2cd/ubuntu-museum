@@ -190,6 +190,7 @@ Try riscv64:
 
 ```sh
 docker run -it --rm --platform linux/riscv64 ghcr.io/2cd/ubuntu:24.04
+# OR: docker run -it --rm ghcr.io/2cd/ubuntu:24.04-rv64gc
 ```
 
 Note: The above is only suitable for simple cases, in more cases we will use use it as a base container image and use it with other services.
@@ -255,7 +256,7 @@ dpkg-reconfigure locales
 
 1. Actually, compared to the official Ubuntu Docker image, it does not have any particularly great advantages. One significant difference compared to the official one is that it is not as streamlined. This can be seen as both an advantage and a disadvantage. In many cases, being streamlined can reduce the size it occupies. However, for certain purposes, like graphical user interfaces, being too streamlined may cause issues.
 
-2. In modern operating systems (Linux kernel: 6.x), running some ancient systems (in containers, not virtual machines) may cause issues.
+2. On modern operating systems (Linux kernel: 6.x), running some ancient systems (in containers, not virtual machines) may cause issues.
 
 For example, Warty (i386, 4.10):
 
