@@ -225,11 +225,11 @@ If you want more information, go to [Github Releases](https://github.com/2cd/ubu
 
 ### nspawn
 
-To decompress zstd & use systemd-nspawn, we need to install these packages.
+To use systemd-nspawn, we need to install it.
 
 ```sh
 # run apt as root (i.e., +sudo/doas)
-apt install systemd-container zstd
+apt install systemd-container
 ```
 
 Next, let's take 22.10 arm64 for example.
@@ -243,8 +243,12 @@ cd tmp
 # We need to download a file of size 26.15 MiB.
 curl -LO 'https://github.com/2cd/ubuntu-museum/releases/download/22.10/22.10_kinetic_arm64.tar.zst'
 
-# run gnutar or bsdtar (libarchive-tools) as root (i.e., +sudo/+doas)
-tar -C kinetic-arm64 -xf "22.10_kinetic_arm64.tar.zst"
+# install bsdtar, run apt as root (i.e., +sudo/+doas)
+apt install libarchive-tools
+
+# run gnutar or bsdtar as root (i.e., +sudo/+doas)
+# if using gnutar, bsdtar -> tar
+bsdtar -C kinetic-arm64 -xf "22.10_kinetic_arm64.tar.zst"
 
 # run nspawn as root (i.e., +sudo/+doas)
 # On pwsh, $LANG -> $env:LANG
