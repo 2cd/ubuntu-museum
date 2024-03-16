@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Artful, 17.10)
+name: build (Artful, 17.10)
 on: { "push": { "paths": [ ".github/workflows/17.10-artful.yml" ] } }
 
 env:

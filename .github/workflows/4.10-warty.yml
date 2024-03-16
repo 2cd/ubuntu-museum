@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Warty, 4.10)
+name: build (Warty, 4.10)
 on: { "push": { "paths": [ ".github/workflows/4.10-warty.yml" ] } }
 
 env:

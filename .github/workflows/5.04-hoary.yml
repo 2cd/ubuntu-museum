@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Hoary, 5.04)
+name: build (Hoary, 5.04)
 on: { "push": { "paths": [ ".github/workflows/5.04-hoary.yml" ] } }
 
 env:

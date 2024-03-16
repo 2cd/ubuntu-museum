@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Gutsy, 7.10)
+name: build (Gutsy, 7.10)
 on: { "push": { "paths": [ ".github/workflows/7.10-gutsy.yml" ] } }
 
 env:

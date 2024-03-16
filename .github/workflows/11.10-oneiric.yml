@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Oneiric, 11.10)
+name: build (Oneiric, 11.10)
 on: { "push": { "paths": [ ".github/workflows/11.10-oneiric.yml" ] } }
 
 env:

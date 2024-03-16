@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Groovy, 20.10)
+name: build (Groovy, 20.10)
 on: { "push": { "paths": [ ".github/workflows/20.10-groovy.yml" ] } }
 
 env:

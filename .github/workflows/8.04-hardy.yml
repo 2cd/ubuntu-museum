@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Hardy, 8.04)
+name: build (Hardy, 8.04)
 on: { "push": { "paths": [ ".github/workflows/8.04-hardy.yml" ] } }
 
 env:

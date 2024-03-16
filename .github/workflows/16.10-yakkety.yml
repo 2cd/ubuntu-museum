@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Yakkety, 16.10)
+name: build (Yakkety, 16.10)
 on: { "push": { "paths": [ ".github/workflows/16.10-yakkety.yml" ] } }
 
 env:

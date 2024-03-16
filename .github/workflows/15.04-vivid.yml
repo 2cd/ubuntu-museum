@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Vivid, 15.04)
+name: build (Vivid, 15.04)
 on: { "push": { "paths": [ ".github/workflows/15.04-vivid.yml" ] } }
 
 env:

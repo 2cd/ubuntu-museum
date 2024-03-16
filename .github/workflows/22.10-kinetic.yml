@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Kinetic, 22.10)
+name: build (Kinetic, 22.10)
 on: { "push": { "paths": [ ".github/workflows/22.10-kinetic.yml" ] } }
 
 env:

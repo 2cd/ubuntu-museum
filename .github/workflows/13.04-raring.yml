@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Raring, 13.04)
+name: build (Raring, 13.04)
 on: { "push": { "paths": [ ".github/workflows/13.04-raring.yml" ] } }
 
 env:

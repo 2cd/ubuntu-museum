@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Hirsute, 21.04)
+name: build (Hirsute, 21.04)
 on: { "push": { "paths": [ ".github/workflows/21.04-hirsute.yml" ] } }
 
 env:

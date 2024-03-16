@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Utopic, 14.10)
+name: build (Utopic, 14.10)
 on: { "push": { "paths": [ ".github/workflows/14.10-utopic.yml" ] } }
 
 env:

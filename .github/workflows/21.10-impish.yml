@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Impish, 21.10)
+name: build (Impish, 21.10)
 on: { "push": { "paths": [ ".github/workflows/21.10-impish.yml" ] } }
 
 env:

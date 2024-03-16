@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Lunar, 23.04)
+name: build (Lunar, 23.04)
 on: { "push": { "paths": [ ".github/workflows/23.04-lunar.yml" ] } }
 
 env:

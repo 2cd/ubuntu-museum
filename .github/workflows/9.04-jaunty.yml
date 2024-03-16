@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Jaunty, 9.04)
+name: build (Jaunty, 9.04)
 on: { "push": { "paths": [ ".github/workflows/9.04-jaunty.yml" ] } }
 
 env:

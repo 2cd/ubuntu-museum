@@ -81,8 +81,9 @@ fn main() -> anyhow::Result<()> {
     let mut map = BTreeMap::new();
 
     for (ron_file, ref file_content, gh_repo) in [
-        (uuu_os_file, ubuntu_ron, "ubuntu-museum"),
-        // (deb_os_file, debian_ron, "debian-museum"),
+        ////
+        //(uuu_os_file, ubuntu_ron, "ubuntu-museum"),
+        (deb_os_file, debian_ron, "debian-museum"),
     ] {
         map.clear();
         let cfg = ron::from_str::<Cfg>(file_content)?;

@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Wily, 15.10)
+name: build (Wily, 15.10)
 on: { "push": { "paths": [ ".github/workflows/15.10-wily.yml" ] } }
 
 env:

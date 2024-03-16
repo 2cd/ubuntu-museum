@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Precise, 12.04)
+name: build (Precise, 12.04)
 on: { "push": { "paths": [ ".github/workflows/12.04-precise.yml" ] } }
 
 env:

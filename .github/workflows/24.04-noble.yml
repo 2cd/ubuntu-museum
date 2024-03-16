@@ -1,6 +1,5 @@
-name: build & push (Ubuntu-Noble, 24.04)
-# on: { "push": { "paths": [ ".github/workflows/24.04-noble.yml" ] } }
-on: { "schedule": [ { "cron": '24 4 */3 * *' } ] }
+name: build (Noble, 24.04)
+on: { "push": { "paths": [ ".github/workflows/24.04-noble.yml" ] } }
 
 env:
   DEBIAN_FRONTEND: noninteractive

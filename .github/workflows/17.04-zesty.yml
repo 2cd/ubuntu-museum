@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Zesty, 17.04)
+name: build (Zesty, 17.04)
 on: { "push": { "paths": [ ".github/workflows/17.04-zesty.yml" ] } }
 
 env:

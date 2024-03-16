@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Quantal, 12.10)
+name: build (Quantal, 12.10)
 on: { "push": { "paths": [ ".github/workflows/12.10-quantal.yml" ] } }
 
 env:

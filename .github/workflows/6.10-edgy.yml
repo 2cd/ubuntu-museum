@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Edgy, 6.10)
+name: build (Edgy, 6.10)
 on: { "push": { "paths": [ ".github/workflows/6.10-edgy.yml" ] } }
 
 env:

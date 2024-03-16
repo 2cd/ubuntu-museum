@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Karmic, 9.10)
+name: build (Karmic, 9.10)
 on: { "push": { "paths": [ ".github/workflows/9.10-karmic.yml" ] } }
 
 env:

@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Breezy, 5.10)
+name: build (Breezy, 5.10)
 on: { "push": { "paths": [ ".github/workflows/5.10-breezy.yml" ] } }
 
 env:

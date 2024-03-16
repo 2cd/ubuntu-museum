@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Jammy, 22.04)
+name: build (Jammy, 22.04)
 on: { "push": { "paths": [ ".github/workflows/22.04-jammy.yml" ] } }
 
 env:

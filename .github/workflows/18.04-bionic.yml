@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Bionic, 18.04)
+name: build (Bionic, 18.04)
 on: { "push": { "paths": [ ".github/workflows/18.04-bionic.yml" ] } }
 
 env:

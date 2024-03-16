@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Dapper, 6.06)
+name: build (Dapper, 6.06)
 on: { "push": { "paths": [ ".github/workflows/6.06-dapper.yml" ] } }
 
 env:

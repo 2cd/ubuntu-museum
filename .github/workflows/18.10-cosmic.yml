@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Cosmic, 18.10)
+name: build (Cosmic, 18.10)
 on: { "push": { "paths": [ ".github/workflows/18.10-cosmic.yml" ] } }
 
 env:

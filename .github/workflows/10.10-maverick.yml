@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Maverick, 10.10)
+name: build (Maverick, 10.10)
 on: { "push": { "paths": [ ".github/workflows/10.10-maverick.yml" ] } }
 
 env:

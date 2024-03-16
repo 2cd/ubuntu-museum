@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Intrepid, 8.10)
+name: build (Intrepid, 8.10)
 on: { "push": { "paths": [ ".github/workflows/8.10-intrepid.yml" ] } }
 
 env:

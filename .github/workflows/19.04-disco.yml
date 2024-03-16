@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Disco, 19.04)
+name: build (Disco, 19.04)
 on: { "push": { "paths": [ ".github/workflows/19.04-disco.yml" ] } }
 
 env:

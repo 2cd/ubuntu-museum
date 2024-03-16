@@ -1,4 +1,4 @@
-name: build & push (Ubuntu-Eoan, 19.10)
+name: build (Eoan, 19.10)
 on: { "push": { "paths": [ ".github/workflows/19.10-eoan.yml" ] } }
 
 env:
