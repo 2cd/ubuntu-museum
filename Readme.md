@@ -161,7 +161,14 @@ apt update
 apt install docker.io
 ```
 
-Step2 (Optional): add the current user to the docker user group
+Step2: start docker
+
+```sh
+/etc/init.d/docker start
+# OR: systemctl start docker
+```
+
+Step3 (Optional): add the current user to the docker user group
 
 ```sh
 # run it on POSIX-compliant shell (e.g., bash, zsh, ash)
@@ -218,11 +225,11 @@ If you want more information, go to [Github Releases](https://github.com/2cd/ubu
 
 ### nspawn
 
-To use systemd-nspawn, we need to install it.
+To decompress zstd & use systemd-nspawn, we need to install these packages.
 
 ```sh
 # run apt as root (i.e., +sudo/doas)
-apt install systemd-container
+apt install systemd-container zstd
 ```
 
 Next, let's take 22.10 arm64 for example.
