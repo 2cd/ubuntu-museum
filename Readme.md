@@ -246,8 +246,8 @@ curl -LO 'https://github.com/2cd/ubuntu-museum/releases/download/22.10/22.10_kin
 # install bsdtar, run apt as root (i.e., +sudo/+doas)
 apt install libarchive-tools
 
-# run gnutar or bsdtar as root (i.e., +sudo/+doas)
-# if using gnutar, bsdtar -> tar
+# run bsdtar or gnutar as root (i.e., +sudo/+doas)
+# if using gnutar, then `bsdtar` -> `tar`
 bsdtar -C kinetic-arm64 -xf "22.10_kinetic_arm64.tar.zst"
 
 # run nspawn as root (i.e., +sudo/+doas)
