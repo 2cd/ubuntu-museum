@@ -1,4 +1,4 @@
-name: build (Trusty, 14.04)
+name: build (14.04, Trusty)
 on: { "push": { "paths": [ ".github/workflows/14.04-trusty.yml" ] } }
 
 env:

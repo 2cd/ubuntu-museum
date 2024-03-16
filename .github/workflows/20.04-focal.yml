@@ -1,4 +1,4 @@
-name: build (Focal, 20.04)
+name: build (20.04, Focal)
 on: { "push": { "paths": [ ".github/workflows/20.04-focal.yml" ] } }
 
 env:

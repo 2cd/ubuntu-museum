@@ -158,7 +158,7 @@ Step1: install docker
 ```sh
 # run apt as root (e.g., sudo apt update)
 apt update
-apt install docker.io
+apt install docker.io apparmor
 ```
 
 Step2: start docker
@@ -171,7 +171,7 @@ Step2: start docker
 Step3 (Optional): add the current user to the docker user group
 
 ```sh
-# run it on POSIX-compliant shell (e.g., bash, zsh, ash)
+# run it on POSIX-compliant shell (e.g., zsh, ash, bash)
 # run adduser as root (i.e., +sudo/+doas)
 adduser $(id -un) docker
 ```

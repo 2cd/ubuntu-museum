@@ -1,4 +1,4 @@
-name: build (Xenial, 16.04)
+name: build (16.04, Xenial)
 on: { "push": { "paths": [ ".github/workflows/16.04-xenial.yml" ] } }
 
 env:

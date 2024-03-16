@@ -1,4 +1,4 @@
-name: build (Mantic, 23.10)
+name: build (23.10, Mantic)
 on: { "push": { "paths": [ ".github/workflows/23.10-mantic.yml" ] } }
 
 env:
