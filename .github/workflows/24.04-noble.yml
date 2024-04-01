@@ -51,6 +51,13 @@ jobs:
           sudo apt-get install aria2 qemu-system-x86 -y
           aria2c -s5 -x5 -k1m $url --no-conf -o v.tzst
           tar -xvf v.tzst
+
+          sshcfg=~/.ssh/config
+          if [[ -e $sshcfg ]] {
+              mv -vf $sshcfg ${sshcfg}.$(date +%Y-%m-%d_%H-%M)
+          }
+          install -Dm600 vm.sshconf $sshcfg
+
           sudo install -Dm755 virtiofsd /usr/libexec/virtiofsd
           unlink v.tzst ||:
           sudo sysctl -w fs.file-max=1000000
@@ -61,7 +68,7 @@ jobs:
         run: |
           for i ({1..1800}) {
               print $i
-              case $(ssh -F vm.sshconf vm echo OK ||:) {
+              case $(ssh vm echo OK ||:) {
                   (OK) break ;;
                   (*) sleep 1 ;;
               }
@@ -76,9 +83,6 @@ jobs:
             cd /var/data
             ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --obtain
             mv -vf tmp /media/sd/ || cp -va tmp /media/sd/
-          args: |
-            -F
-            vm.sshconf
 
       - name: repack rootfs & save cache
         run: ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --repack --zstd-level ${{env.ZSTD_LV}} --save-cache
