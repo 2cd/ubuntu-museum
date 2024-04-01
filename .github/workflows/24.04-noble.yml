@@ -18,8 +18,15 @@ jobs:
         arch:
           - amd64
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: zsh --pipefail -fex {0}
 
     steps:
+      - name: install zsh
+        shell: sh -e {0}
+        run: ${{ vars.INSTALL_ZSH }}
+
       # ${{vars.INSTALL_QEMU_AND_DEBOOTSTRAP}}
       - name: preparations
         run: |
