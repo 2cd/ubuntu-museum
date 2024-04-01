@@ -62,6 +62,7 @@ jobs:
           unlink v.tzst ||:
           sudo sysctl -w fs.file-max=1000000
           sudo chmod 666 /dev/kvm
+          cp -vp $(command -v get-ctr) .
           tmux new-session -d -s run-vm ./run
           # timeout 2 tmux attach-session -r -t run-vm ||:
       - name: wait ssh
@@ -79,6 +80,7 @@ jobs:
         with:
           host: vm
           run: |
+            cp -p /media/sd/get-ctr /bin/
             mkdir -p /var/data
             cd /var/data
             ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --obtain
