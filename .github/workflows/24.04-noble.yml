@@ -21,6 +21,7 @@ jobs:
     defaults:
       run:
         shell: zsh --pipefail -fex {0}
+        working-directory: /tmp/vm
 
     steps:
       - name: install zsh
@@ -45,8 +46,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt-get install aria2 qemu-system-x86 -y
-          mkdir -p /tmp/vm
-          cd /tmp/vm
+          # mkdir -p /tmp/vm
+          # cd /tmp/vm
           aria2c -s5 -x5 -k1m $url --no-conf -o v.tzst
           tar -xvf v.tzst
           sudo install -Dm755 virtiofsd /usr/libexec/virtiofsd
@@ -56,7 +57,6 @@ jobs:
           tmux new-session -d -s run-vm ./run
           # timeout 2 tmux attach-session -r -t run-vm ||:
       - name: wait ssh
-        working-directory: /tmp/vm
         run: |
           for i ({1..1800}) {
               print $i
@@ -77,12 +77,10 @@ jobs:
             mv -vf tmp /media/sd/ || cp -va tmp /media/sd/
           args: |
             -F
-            /tmp/vm/vm.sshconf
+            vm.sshconf
 
       - name: repack rootfs & save cache
-        run: |
-          cd /tmp/vm
-          ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --repack --zstd-level ${{env.ZSTD_LV}} --save-cache
+        run: ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --repack --zstd-level ${{env.ZSTD_LV}} --save-cache
   docker:
     needs: build
     runs-on: ubuntu-latest
