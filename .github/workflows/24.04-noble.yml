@@ -17,9 +17,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ${{vars.INSTALL_QEMU_AND_DEBOOTSTRAP}}
       - name: preparations
         run: |
-          ${{vars.INSTALL_QEMU_AND_DEBOOTSTRAP}}
           ${{vars.GET_CTR_CMD}}
 
       - name: Login to REG
@@ -29,8 +29,36 @@ jobs:
           username: ${{vars.REG_USER}}
           password: ${{ secrets.DEB_UUU_TOKEN }}
 
-      - name: download & repack rootfs & save cache
-        run: ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --obtain --repack --zstd-level ${{env.ZSTD_LV}} --save-cache
+      - name: download and run vm
+        env:
+          url: "https://github.com/2cd/debian-museum/releases/download/unstable/dev-vm_x64.tar.zst"
+        run: |
+          apt update
+          apt-get install aria2 autossh -y
+          mkdir -p /tmp/vm
+          cd /tmp/vm
+          aria2c -s5 -x5 -k1m $url -o v.tzst
+          tar -xvf t.tzst
+          tmux new-session -d -s run-vm ./run
+          autossh -M0 -F vm.sshconf vm echo OK ||:
+
+      - name: build rootfs in vm
+        uses: 2moe/local-ssh-action@v0
+        with:
+          host: vm
+          run: |
+            mkdir -p /var/data
+            cd /var/data
+            ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --obtain
+            mv -vf tmp /media/sd/ || cp -va tmp /media/sd/
+          args: |
+            -F
+            /tmp/vm/vm.sshconf
+
+      - name: repack rootfs & save cache
+        run: |
+          cd /tmp/vm
+          ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --repack --zstd-level ${{env.ZSTD_LV}} --save-cache
   docker:
     needs: build
     runs-on: ubuntu-latest
