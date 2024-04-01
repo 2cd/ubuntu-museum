@@ -57,7 +57,7 @@ jobs:
           # timeout 2 tmux attach-session -r -t run-vm ||:
       - name: wait ssh
         run: |
-          let i=0
+          integer i=0
           while ((1)) {
               out=$(ssh -F vm.sshconf vm echo true || print false)
               [[ -n $out ]] || out=false
@@ -65,7 +65,7 @@ jobs:
               if {$out} {
                   break
               }
-              let i+=1
+              i+=1
               print $i
               sleep 1
           }
