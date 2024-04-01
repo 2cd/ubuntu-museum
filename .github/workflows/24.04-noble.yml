@@ -57,17 +57,12 @@ jobs:
           # timeout 2 tmux attach-session -r -t run-vm ||:
       - name: wait ssh
         run: |
-          integer i=0
-          while ((1)) {
-              out=$(ssh -F vm.sshconf vm echo true || print false)
-              [[ -n $out ]] || out=false
-
-              if {$out} {
-                  break
-              }
-              i+=1
+          for i ({1..1800}) {
               print $i
-              sleep 1
+              case $(ssh -F vm.sshconf vm echo OK) {
+                  (OK) break ;;
+                  (*) sleep 1 ;;
+              }
           }
 
       - name: build rootfs in vm
