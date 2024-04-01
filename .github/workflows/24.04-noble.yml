@@ -40,7 +40,22 @@ jobs:
           password: ${{ secrets.DEB_UUU_TOKEN }}
 
       - name: build & repack rootfs & save cache
-        run: ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --obtain --repack --zstd-level ${{env.ZSTD_LV}} --save-cache
+        run: |
+          extra_args=(
+            --arch
+            ${{matrix.arch}}
+            --obtain
+            --repack
+            --zstd-level ${{env.ZSTD_LV}}
+            --save-cache
+          )
+          case ${{matrix.arch}} {
+            (amd64) extra_args+=(
+              --auto-add-extra-suites
+            )
+          }
+          ${{env.BUILD_CMD}} $extra_args
+          exit 1
   docker:
     needs: build
     runs-on: ubuntu-latest
