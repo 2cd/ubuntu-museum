@@ -33,11 +33,11 @@ jobs:
         env:
           url: "https://github.com/2cd/debian-museum/releases/download/unstable/dev-vm_x64.tar.zst"
         run: |
-          apt update
-          apt-get install aria2 autossh -y
+          sudo apt update
+          sudo apt-get install aria2 autossh -y
           mkdir -p /tmp/vm
           cd /tmp/vm
-          aria2c -s5 -x5 -k1m $url -o v.tzst
+          aria2c -s5 -x5 -k1m $url --enable-rpc=false -o v.tzst
           tar -xvf t.tzst
           tmux new-session -d -s run-vm ./run
           autossh -M0 -F vm.sshconf vm echo OK ||:
