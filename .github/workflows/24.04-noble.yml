@@ -16,8 +16,8 @@ jobs:
       # matrix: ${{ fromJson(vars.NOBLE_JSON).matrix }}
       matrix:
         arch:
-          # - amd64
-          - arm64
+          - amd64
+          # - arm64
     runs-on: ubuntu-latest
     defaults:
       run:
