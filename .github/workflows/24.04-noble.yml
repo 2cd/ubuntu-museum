@@ -13,7 +13,10 @@ jobs:
   build:
     strategy:
       fail-fast: true
-      matrix: ${{ fromJson(vars.NOBLE_JSON).matrix }}
+      # matrix: ${{ fromJson(vars.NOBLE_JSON).matrix }}
+      matrix:
+        arch:
+          - amd64
     runs-on: ubuntu-latest
 
     steps:
