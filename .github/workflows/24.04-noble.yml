@@ -44,7 +44,8 @@ jobs:
           tar -xvf v.tzst
           sudo install -Dm755 virtiofsd /usr/libexec/virtiofsd
           unlink v.tzst ||:
-          tmux new-session -d -s run-vm ./run
+          ./run
+          # tmux new-session -d -s run-vm ./run
       - name: wait ssh
         run: |
           timeout 2 tmux attach-session -r -t run-vm ||:
