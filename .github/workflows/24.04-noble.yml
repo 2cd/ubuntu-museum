@@ -56,10 +56,11 @@ jobs:
           tmux new-session -d -s run-vm ./run
           # timeout 2 tmux attach-session -r -t run-vm ||:
       - name: wait ssh
+        working-directory: /tmp/vm
         run: |
           for i ({1..1800}) {
               print $i
-              case $(ssh -F vm.sshconf vm echo OK) {
+              case $(ssh -F vm.sshconf vm echo OK ||:) {
                   (OK) break ;;
                   (*) sleep 1 ;;
               }
