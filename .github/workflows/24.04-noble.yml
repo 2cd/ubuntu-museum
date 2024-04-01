@@ -42,7 +42,7 @@ jobs:
           cd /tmp/vm
           aria2c -s5 -x5 -k1m $url --no-conf -o v.tzst
           tar -xvf v.tzst
-          install -Dm755 virtiofsd /usr/libexec/virtiofsd
+          sudo install -Dm755 virtiofsd /usr/libexec/virtiofsd
           unlink v.tzst ||:
           tmux new-session -d -s run-vm ./run
       - name: wait ssh
