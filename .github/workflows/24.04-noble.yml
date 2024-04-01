@@ -53,10 +53,10 @@ jobs:
           tar -xvf v.tzst
 
           sshcfg=~/.ssh/config
-          if [[ -e $sshcfg ]] {
-              mv -vf $sshcfg ${sshcfg}.$(date +%Y-%m-%d_%H-%M)
-          }
-          install -Dm600 vm.sshconf $sshcfg
+          sshkey=~/.ssh/vm.ed25519
+          mv -vf $sshcfg ${sshcfg}.$(date +%Y-%m-%d_%H-%M) ||:
+          install -Dm600 vm.ed25519 $sshkey
+          sed -E "/Identity/ s@\./(vm.ed25519)@$sshkey@" vm.sshconf > $sshcfg
 
           sudo install -Dm755 virtiofsd /usr/libexec/virtiofsd
           unlink v.tzst ||:
