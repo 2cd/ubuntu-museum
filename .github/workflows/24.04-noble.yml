@@ -37,14 +37,18 @@ jobs:
           url: "https://github.com/2cd/debian-museum/releases/download/unstable/dev-vm_x64.tar.zst"
         run: |
           sudo apt update
-          sudo apt-get install aria2 autossh -y
+          sudo apt-get install aria2 autossh qemu-system-x86 -y
           mkdir -p /tmp/vm
           cd /tmp/vm
           aria2c -s5 -x5 -k1m $url --no-conf -o v.tzst
           tar -xvf v.tzst
+          install -Dm755 virtiofsd /usr/libexec/virtiofsd
           unlink v.tzst ||:
           tmux new-session -d -s run-vm ./run
-          sleep 10
+      - name: wait ssh
+        run: |
+          timeout 2 tmux attach-session -r -t run-vm ||:
+          sleep 5
           autossh -M0 -F vm.sshconf vm echo OK ||:
 
       - name: build rootfs in vm
