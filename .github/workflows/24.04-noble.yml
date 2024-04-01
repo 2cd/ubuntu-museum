@@ -39,8 +39,9 @@ jobs:
           cd /tmp/vm
           aria2c -s5 -x5 -k1m $url --no-conf -o v.tzst
           tar -xvf v.tzst
-          rm v.tzst ||:
+          unlink v.tzst ||:
           tmux new-session -d -s run-vm ./run
+          sleep 10
           autossh -M0 -F vm.sshconf vm echo OK ||:
 
       - name: build rootfs in vm
