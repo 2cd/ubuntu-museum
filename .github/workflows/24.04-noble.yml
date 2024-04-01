@@ -44,7 +44,7 @@ jobs:
           url: "https://github.com/2cd/debian-museum/releases/download/unstable/dev-vm_x64.tar.zst"
         run: |
           sudo apt update
-          sudo apt-get install aria2 autossh qemu-system-x86 -y
+          sudo apt-get install aria2 qemu-system-x86 -y
           mkdir -p /tmp/vm
           cd /tmp/vm
           aria2c -s5 -x5 -k1m $url --no-conf -o v.tzst
@@ -54,11 +54,21 @@ jobs:
           sudo sysctl -w fs.file-max=1000000
           sudo chmod 666 /dev/kvm
           tmux new-session -d -s run-vm ./run
+          # timeout 2 tmux attach-session -r -t run-vm ||:
       - name: wait ssh
         run: |
-          timeout 2 tmux attach-session -r -t run-vm ||:
-          sleep 5
-          autossh -M0 -F vm.sshconf vm echo OK ||:
+          let i=0
+          while ((1)) {
+              out=$(ssh -F vm.sshconf vm echo true || print false)
+              [[ -n $out ]] || out=false
+
+              if {$out} {
+                  break
+              }
+              let i+=1
+              print $i
+              sleep 1
+          }
 
       - name: build rootfs in vm
         uses: 2moe/local-ssh-action@v0
