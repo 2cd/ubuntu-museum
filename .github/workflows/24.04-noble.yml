@@ -22,20 +22,15 @@ jobs:
     defaults:
       run:
         shell: zsh --pipefail -fex {0}
-        working-directory: /tmp/vm
-
     steps:
       - name: install zsh
         shell: sh -e {0}
-        working-directory: /tmp/
-        run: |
-          mkdir -p vm
-          ${{ vars.INSTALL_ZSH }}
+        run: ${{ vars.INSTALL_ZSH }}
 
-      # ${{vars.INSTALL_QEMU_AND_DEBOOTSTRAP}}
       - name: preparations
         run: |
           ${{vars.GET_CTR_CMD}}
+          ${{vars.INSTALL_QEMU_AND_DEBOOTSTRAP}}
 
       - name: Login to REG
         uses: docker/login-action@v3
@@ -44,55 +39,8 @@ jobs:
           username: ${{vars.REG_USER}}
           password: ${{ secrets.DEB_UUU_TOKEN }}
 
-      - name: download and run vm
-        env:
-          url: "https://github.com/2cd/debian-museum/releases/download/unstable/dev-vm_x64.tar.zst"
-        run: |
-          sudo apt update
-          sudo apt-get install aria2 qemu-system-x86 -y
-          aria2c -s5 -x5 -k1m $url --no-conf -o v.tzst
-          tar -xvf v.tzst
-
-          sshcfg=~/.ssh/config
-          sshkey=~/.ssh/vm.ed25519
-          mv -vf $sshcfg ${sshcfg}.$(date +%Y-%m-%d_%H-%M) ||:
-          install -Dm600 vm.ed25519 $sshkey
-          sed -E "/Identity/ s@\./(vm.ed25519)@$sshkey@" vm.sshconf > $sshcfg
-
-          sudo install -Dm755 virtiofsd /usr/libexec/virtiofsd
-          unlink v.tzst ||:
-          sudo sysctl -w fs.file-max=1000000
-          sudo chmod 666 /dev/kvm
-          cp -vp $(command -v get-ctr) .
-          tmux new-session -d -s run-vm ./run
-          # timeout 2 tmux attach-session -r -t run-vm ||:
-      - name: wait ssh
-        run: |
-          for i ({1..1800}) {
-              print $i
-              case $(ssh vm echo OK ||:) {
-                  (OK) break ;;
-                  (*) sleep 1 ;;
-              }
-          }
-
-      - name: build rootfs in vm
-        uses: 2moe/local-ssh-action@v0
-        with:
-          host: vm
-          run: |
-            cp -p /media/sd/get-ctr /bin/
-            mkdir -p /var/data
-            cd /var/data
-            if ((! $+commands[systemd-nspawn])) {
-              apt-get update
-              apt install -y systemd-container
-            }
-            ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --obtain
-            mv -vf tmp /media/sd/ || cp -va tmp /media/sd/
-
-      - name: repack rootfs & save cache
-        run: ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --repack --zstd-level ${{env.ZSTD_LV}} --save-cache
+      - name: build & repack rootfs & save cache
+        run: ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --obtain --repack --zstd-level ${{env.ZSTD_LV}} --save-cache
   docker:
     needs: build
     runs-on: ubuntu-latest
@@ -154,7 +102,7 @@ jobs:
         run: echo RELEASE_TAG=$(${{env.BUILD_CMD}} --release-tag) >>$GITHUB_ENV
 
       - name: release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           fail_on_unmatched_files: true
           tag_name: ${{env.RELEASE_TAG}}
