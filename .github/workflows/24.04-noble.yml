@@ -83,6 +83,8 @@ jobs:
             cp -p /media/sd/get-ctr /bin/
             mkdir -p /var/data
             cd /var/data
+            apt-get update
+            apt install -y systemd-container
             ${{env.BUILD_CMD}} --arch ${{matrix.arch}} --obtain
             mv -vf tmp /media/sd/ || cp -va tmp /media/sd/
 
