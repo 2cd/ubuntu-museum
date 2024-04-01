@@ -13,11 +13,11 @@ jobs:
   build:
     strategy:
       fail-fast: true
-      # matrix: ${{ fromJson(vars.NOBLE_JSON).matrix }}
-      matrix:
-        arch:
-          - amd64
-          # - arm64
+      matrix: ${{ fromJson(vars.NOBLE_JSON).matrix }}
+      # matrix:
+      #   arch:
+      #     - amd64
+      #     - arm64
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -55,7 +55,7 @@ jobs:
             )
           }
           ${{env.BUILD_CMD}} $extra_args
-          exit 1
+# --------------------------------------
   docker:
     needs: build
     runs-on: ubuntu-latest
