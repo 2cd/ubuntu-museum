@@ -40,6 +40,8 @@ jobs:
           password: ${{ secrets.DEB_UUU_TOKEN }}
 
       - name: build & repack rootfs & save cache
+        continue-on-error: true
+        id: build_and_save_cache
         run: |
           extra_args=(
             --arch
@@ -54,7 +56,13 @@ jobs:
               --auto-add-extra-suites
             )
           }
+          print -R ${{env.BUILD_CMD}} $extra_args \"\$@\" > run.sh
           ${{env.BUILD_CMD}} $extra_args
+
+      - name: compatibility-mode
+        if: steps.build_and_save_cache.outcome == 'failure'
+        run: sh run.sh --compatibility-mode
+
 # --------------------------------------
   docker:
     needs: build
