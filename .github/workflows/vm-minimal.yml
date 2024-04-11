@@ -134,14 +134,14 @@ env:
   # ROOTFS_REPO: "ubuntu:kinetic-"
   #
   # [lunar]
-  RELEASE_TAG: "23.04"
-  CODENAME: "lunar"
-  ROOTFS_REPO: "ubuntu:lunar-"
+  # RELEASE_TAG: "23.04"
+  # CODENAME: "lunar"
+  # ROOTFS_REPO: "ubuntu:lunar-"
   #
   # [mantic]
-  # RELEASE_TAG: "23.10"
-  # CODENAME: "mantic"
-  # ROOTFS_REPO: "ubuntu:mantic-"
+  RELEASE_TAG: "23.10"
+  CODENAME: "mantic"
+  ROOTFS_REPO: "ubuntu:mantic-"
   #
   # [noble]
   # RELEASE_TAG: "24.04"
