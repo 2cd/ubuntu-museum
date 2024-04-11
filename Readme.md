@@ -190,7 +190,7 @@ qemu-img resize disk.img +3G
 ./run
 ```
 
-### Example 2 (noble arm64)
+### Example 2 (jammy arm64)
 
 #### 2.1 install qemu-aarch64 & zsh
 
@@ -212,13 +212,13 @@ apt install qemu-system-arm zsh
 ```sh
 cd /sdcard/Download || cd ~/Downloads
 
-mkdir -p 24.04/arm64
-cd 24.04/arm64
+mkdir -p 22.04/arm64
+cd 22.04/arm64
 
-url='https://github.com/2cd/ubuntu-museum/releases/download/24.04/vm-minimal_noble_arm64.tar.zst'
-aria2c -s5 -x5 --no-conf -o noble-vm.tzst "$url" || curl -Lo noble-vm.tzst "$url"
+url='https://github.com/2cd/ubuntu-museum/releases/download/22.04/vm-minimal_jammy_arm64.tar.zst'
+aria2c -s5 -x5 --no-conf -o jammy-vm.tzst "$url" || curl -Lo jammy-vm.tzst "$url"
 
-tar -xvf noble-vm.tzst
+tar -xvf jammy-vm.tzst
 ```
 
 #### 2.3 expand disk
@@ -233,12 +233,12 @@ qemu-img resize disk.img +1G
 ./run
 ```
 
-### Example 3 (Running focal x64 VM via docker)
+### Example 3 (Running jammy x64 VM via docker)
 
 ```sh
-tag=focal-minimal-x64
-# tag=focal-minimal-arm64
-docker run -it --name focal-kvm --device /dev/kvm ghcr.io/2cd/ubuntu-vm:$tag
+tag=jammy-minimal-x64
+# tag=jammy-minimal-arm64
+docker run -it --name jammy-kvm --device /dev/kvm ghcr.io/2cd/ubuntu-vm:$tag
 ```
 
 ## Container
