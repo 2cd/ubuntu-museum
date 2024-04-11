@@ -59,14 +59,14 @@ env:
   # ROOTFS_REPO: "ubuntu:vivid-"
   #
   # [wily]
-  RELEASE_TAG: "15.10"
-  CODENAME: "wily"
-  ROOTFS_REPO: "ubuntu:wily-"
+  # RELEASE_TAG: "15.10"
+  # CODENAME: "wily"
+  # ROOTFS_REPO: "ubuntu:wily-"
   #
   # [xenial]
-  # RELEASE_TAG: "16.04"
-  # CODENAME: "xenial"
-  # ROOTFS_REPO: "ubuntu:xenial-"
+  RELEASE_TAG: "16.04"
+  CODENAME: "xenial"
+  ROOTFS_REPO: "ubuntu:xenial-"
   #
   # [yakkety]
   # RELEASE_TAG: "16.10"
@@ -203,13 +203,12 @@ jobs:
             tty: hev0
             net: enp0s0
 
-          # - arch: s390x
-          #   deb_arch: s390x
-          #   qemu_pkg_arch: misc
-          #   tty: ttysclp0
-          #   #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
-          #   net: eno1
-
+          - arch: s390x
+            deb_arch: s390x
+            qemu_pkg_arch: misc
+            tty: ttysclp0
+            #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
+            net: eno1
           # # ---------------------
 
     runs-on: ubuntu-latest
