@@ -196,24 +196,24 @@ jobs:
             tty: ttyAMA0
             net: enp0s1
 
-          - arch: x86
-            deb_arch: i386
-            qemu_pkg_arch: x86
-            tty: ttyS0
-            net: ens3
+        #   - arch: x86
+        #     deb_arch: i386
+        #     qemu_pkg_arch: x86
+        #     tty: ttyS0
+        #     net: ens3
 
-          - arch: ppc64le
-            deb_arch: ppc64el
-            qemu_pkg_arch: ppc
-            tty: hev0
-            net: enp0s0
+        #   - arch: ppc64le
+        #     deb_arch: ppc64el
+        #     qemu_pkg_arch: ppc
+        #     tty: hev0
+        #     net: enp0s0
 
-          - arch: s390x
-            deb_arch: s390x
-            qemu_pkg_arch: misc
-            tty: ttysclp0
-            #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
-            net: eno1
+        #   - arch: s390x
+        #     deb_arch: s390x
+        #     qemu_pkg_arch: misc
+        #     tty: ttysclp0
+        #     #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
+        #     net: eno1
 
           # ------------------------
           # - arch: mips64le
@@ -504,7 +504,7 @@ jobs:
             (ubuntu:*)
               case ${{matrix.arch}} {
                   (x64|x86|ppc64le|s390x) kernel=virtual   ;;
-                  (armv7a) kernel=linux-image-generic-lpae ;;
+                  (armv7a) kernel=generic-lpae ;;
                   (*)
                       case $codename {
                           (jessie) kernel=generic ;;

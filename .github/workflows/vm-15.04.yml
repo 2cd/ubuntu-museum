@@ -1,858 +1,858 @@
-# name: minimal virtual machine
-# # auto-task.start-build-time = ?
-
-# env:
-#   # DEBIAN_FRONTEND: noninteractive
-#   DOCKER_DIR: assets/pack-vm-to-docker
-#   DEB_ENV: "DEBIAN_FRONTEND=noninteractive"
-#   DEV_DIR: assets/vm-minimal
-#   SSH_VM: "ssh -F ssh/vm.sshconf vm"
-#   FETCH: "aria2c -s5 -x5 -k1m --no-conf"
-#   new_task: "tmux new-session -d"
-#   #
-#   # [sid]
-#   # RELEASE_TAG: unstable
-#   # CODENAME: sid
-#   # ROOTFS_REPO: "debian-sid:"
-#   #
-#   # [trixie]
-#   # RELEASE_TAG: 13
-#   # CODENAME: "trixie"
-#   # ROOTFS_REPO: "debian:trixie-"
-#   #
-#   # [bookworm]
-#   # RELEASE_TAG: 12
-#   # CODENAME: "bookworm"
-#   # ROOTFS_REPO: "debian:bookworm-"
-#   #
-#   # [bullseye]
-#   # RELEASE_TAG: 11
-#   # CODENAME: "bullseye"
-#   # ROOTFS_REPO: "debian:bullseye-"
-#   #
-#   # [buster]
-#   # RELEASE_TAG: 10
-#   # CODENAME: "buster"
-#   # ROOTFS_REPO: "debian:buster-"
-#   #
-#   # [stretch]
-#   # RELEASE_TAG: 9
-#   # CODENAME: "stretch"
-#   # ROOTFS_REPO: "debian:stretch-"
-#   #
-#   # [jessie]
-#   # RELEASE_TAG: 8
-#   # CODENAME: "jessie"
-#   # ROOTFS_REPO: "debian:jessie-"
-
-#   # OS: debian
-#   #
-#   ##
-#   # print "
-#   # 14.04 trusty, 14.10 utopic,  15.04 vivid,   15.10 wily
-#   # 16.04 xenial, 16.10 yakkety, 17.04 zesty,   17.10 artful
-#   # 18.04 bionic, 18.10 cosmic,  19.04 disco,   19.10 eoan
-#   # 20.04 focal,  20.10 groovy,  21.04 hirsute, 21.10 impish
-#   # 22.04 jammy,  22.10 kinetic, 23.04 lunar,   23.10 mantic
-#   # 24.04 noble" | awk -F', ' '{for(i=1;i<=NF;i++){split($i,a," "); print "["a[2]"]\nRELEASE_TAG: \""a[1]"\"\nCODENAME: \""a[2]"\"\nROOTFS_REPO: \"ubuntu:"a[2]"-\"\n"}}'
-#   #
-#   OS: ubuntu
-
-#   # [vivid]
-#   RELEASE_TAG: "15.04"
-#   CODENAME: "vivid"
-#   ROOTFS_REPO: "ubuntu:vivid-"
-#   #
-#   # [wily]
-#   # RELEASE_TAG: "15.10"
-#   # CODENAME: "wily"
-#   # ROOTFS_REPO: "ubuntu:wily-"
-#   #
-#   # [xenial]
-#   # RELEASE_TAG: "16.04"
-#   # CODENAME: "xenial"
-#   # ROOTFS_REPO: "ubuntu:xenial-"
-#   #
-#   # [yakkety]
-#   # RELEASE_TAG: "16.10"
-#   # CODENAME: "yakkety"
-#   # ROOTFS_REPO: "ubuntu:yakkety-"
-#   #
-#   # [zesty]
-#   # RELEASE_TAG: "17.04"
-#   # CODENAME: "zesty"
-#   # ROOTFS_REPO: "ubuntu:zesty-"
-#   #
-#   # [artful]
-#   # RELEASE_TAG: "17.10"
-#   # CODENAME: "artful"
-#   # ROOTFS_REPO: "ubuntu:artful-"
-#   #
-#   # [bionic]
-#   # RELEASE_TAG: "18.04"
-#   # CODENAME: "bionic"
-#   # ROOTFS_REPO: "ubuntu:bionic-"
-#   #
-#   # [cosmic]
-#   # RELEASE_TAG: "18.10"
-#   # CODENAME: "cosmic"
-#   # ROOTFS_REPO: "ubuntu:cosmic-"
-#   #
-#   # [disco]
-#   # RELEASE_TAG: "19.04"
-#   # CODENAME: "disco"
-#   # ROOTFS_REPO: "ubuntu:disco-"
-#   #
-#   # [eoan]
-#   # RELEASE_TAG: "19.10"
-#   # CODENAME: "eoan"
-#   # ROOTFS_REPO: "ubuntu:eoan-"
-#   #
-#   # [focal]
-#   # RELEASE_TAG: "20.04"
-#   # CODENAME: "focal"
-#   # ROOTFS_REPO: "ubuntu:focal-"
-#   #
-#   # [groovy]
-#   # RELEASE_TAG: "20.10"
-#   # CODENAME: "groovy"
-#   # ROOTFS_REPO: "ubuntu:groovy-"
-#   #
-#   # [hirsute]
-#   # RELEASE_TAG: "21.04"
-#   # CODENAME: "hirsute"
-#   # ROOTFS_REPO: "ubuntu:hirsute-"
-#   #
-#   # [impish]
-#   # RELEASE_TAG: "21.10"
-#   # CODENAME: "impish"
-#   # ROOTFS_REPO: "ubuntu:impish-"
-#   #
-#   # [jammy]
-#   # RELEASE_TAG: "22.04"
-#   # CODENAME: "jammy"
-#   # ROOTFS_REPO: "ubuntu:jammy-"
-#   #
-#   # [kinetic]
-#   # RELEASE_TAG: "22.10"
-#   # CODENAME: "kinetic"
-#   # ROOTFS_REPO: "ubuntu:kinetic-"
-#   #
-#   # [lunar]
-#   # RELEASE_TAG: "23.04"
-#   # CODENAME: "lunar"
-#   # ROOTFS_REPO: "ubuntu:lunar-"
-#   #
-#   # [mantic]
-#   # RELEASE_TAG: "23.10"
-#   # CODENAME: "mantic"
-#   # ROOTFS_REPO: "ubuntu:mantic-"
-#   #
-#   # [noble]
-#   # RELEASE_TAG: "24.04"
-#   # CODENAME: "noble"
-#   # ROOTFS_REPO: "ubuntu:noble-"
-
-# on:
-#   push:
-#     # branches: ["build"]
-#     paths:
-#       - .github/workflows/vm-minimal.yml
-# jobs:
-#   build:
-#     strategy:
-#       fail-fast: false
-#       matrix:
-#         include:
-#           # PORTS
-#           # - arch: loong64
-#           #   deb_arch: loong64
-#           #   qemu_pkg_arch: misc
-#           #   tty: ttyS0
-#           #   net: enp0s1
-#           # # ------------------
-#           # SID
-#           - arch: rv64gc
-#             deb_arch: riscv64
-#             qemu_pkg_arch: misc
-#             tty: ttyS0
-#             net: eth0
-#           # # ------------------
-#           - arch: x64
-#             deb_arch: amd64
-#             qemu_pkg_arch: x86
-#             tty: ttyS0
-#             net: enp0s2
-
-#           - arch: arm64
-#             deb_arch: arm64
-#             qemu_pkg_arch: arm
-#             tty: ttyAMA0
-#             net: enp0s1
-
-#           - arch: armv7a
-#             deb_arch: armhf
-#             qemu_pkg_arch: arm
-#             tty: ttyAMA0
-#             net: enp0s1
-
-#           - arch: x86
-#             deb_arch: i386
-#             qemu_pkg_arch: x86
-#             tty: ttyS0
-#             net: ens3
-
-#           - arch: ppc64le
-#             deb_arch: ppc64el
-#             qemu_pkg_arch: ppc
-#             tty: hev0
-#             net: enp0s0
-
-#           - arch: s390x
-#             deb_arch: s390x
-#             qemu_pkg_arch: misc
-#             tty: ttysclp0
-#             #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
-#             net: eno1
-
-#           # ------------------------
-#           # - arch: mips64le
-#           #   deb_arch: mips64el
-#           #   qemu_pkg_arch: mips
-#           #   tty: ttyS0
-#           #   net: enp0s3
-#           # ------------------------
-#           # BOOKWORM
-#           # - arch: mipsle
-#           #   deb_arch: mipsel
-#           #   qemu_pkg_arch: mips
-#           #   tty: ttyS0
-#           #   net: enp0s18
-#           # ------------------------
-#           # BUSTER
-#           # - arch: mipsbe
-#           #   deb_arch: mips
-#           #   qemu_pkg_arch: mips
-#           #   tty: ttyS0
-#           #   net: enp0s18
-
-#     runs-on: ubuntu-latest
-#     env:
-#       non_x86: ${{ !contains(fromJSON('["x64", "x86"]'), matrix.arch) }}
-#       neither_x86_nor_loong: ${{ !contains(fromJSON('["x64", "x86", "loong64"]'), matrix.arch) }}
-#       non_loong: ${{ matrix.arch != 'loong64' }}
-#       is_loong: ${{ matrix.arch == 'loong64' }}
-#       deb_main_supported: ${{ contains(fromJSON('["x64", "x86", "arm64", "armv7a", "rv64gc", "ppc64le", "s390x", "mips64le"]'), matrix.arch) }}
-
-#       DEBUG_MODE: false
-#       #
-#       # debug:
-#       # non_loong: ${{ matrix.arch != 'x64' }}
-#       # is_loong: ${{ matrix.arch == 'x64' }}
-#       # deb_main_supported: ${{ contains(fromJSON('["x86", "arm64", "rv64gc", "ppc64le", "s390x", "mips64le"]'), matrix.arch) }}
-
-#     defaults:
-#       run:
-#         shell: zsh --pipefail -fex {0}
-#     steps:
-#       - name: install zsh
-#         if: runner.arch == 'X64'
-#         shell: sh -e {0}
-#         run: ${{ vars.INSTALL_ZSH }}
-
-#       - name: set deb codename map
-#         id: codename
-#         run: |
-#           local -A map=(
-#             # jessie  jessie
-#             trusty  jessie
-#             utopic  jessie
-#             vivid   jessie
-#             wily    jessie
-
-#             # stretch stretch
-#             xenial  stretch
-#             yakkety stretch
-#             stretch stretch
-#             artful  stretch
-
-#             # buster  buster
-#             bionic  buster
-#             cosmic  buster
-#             disco   buster
-#             eoan    buster
-
-#             # bullseye bullseye
-#             focal    bullseye
-#             groovy   bullseye
-#             hirsute  bullseye
-#             impish   bullseye
-
-#             # bookworm bookworm
-#             jammy    bookworm
-#             kinetic  bookworm
-#             lunar    bookworm
-#             mantic   bookworm
-
-#             # trixie   trixie
-#             noble    trixie
-#           )
-#           code=${{env.CODENAME}}
-#           name=$map[$code]
-#           if ((! #name)) {
-#             name=$code
-#           }
-#           print -R "name=$name" >> $GITHUB_OUTPUT
-
-#       - uses: actions/checkout@v4
-#         with:
-#           repository: 2cd/debian-museum
-#           ref: build
-
-#       - name: export rootfs
-#         env:
-#           scripts: "${{env.DEV_DIR}}/scripts/*"
-#         run: |
-#           sudo cp -pv ${{env.scripts}} /usr/local/bin
-
-#           pkgs=(aria2 qemu-utils)
-#           if { ${{env.non_loong}} } {
-#             pkgs+=(systemd-container)
-#           }
-#           apt-install $pkgs &
-#           task=$!
-
-#           image=ghcr.io/2cd/${{env.ROOTFS_REPO}}${{matrix.arch}}
-#           docker pull $image
-#           name=$(docker create $image)
-#           docker export $name -o rootfs.tar
-#           sudo mkdir -pv rootfs
-#           sudo tar -C rootfs --overwrite -xf rootfs.tar
-#           unlink rootfs.tar
-#           sudo cp -pv ${{env.scripts}} rootfs/usr/local/bin
-#           docker rm $name
-#           wait $task
-
-#       - name: fetch zsh & busybox for loong64
-#         if: fromJSON(env.is_loong)
-#         env:
-#           url: "https://github.com/2moe/zsh-static-docker/releases/download/latest/zsh-${{matrix.arch}}.tar.zst"
-#         run: |
-#           ${{env.new_task}} "apt-install qemu-system-x86"
-#           ${{env.FETCH}} -o a.tzst $url
-#           mkdir -p zsh-tmp
-#           tar -C zsh-tmp -xf a.tzst ||:
-#           for bin (zsh-tmp/opt/bin/{zsh,busybox}) {
-#             sudo install -Dm755 $bin rootfs/bin/${bin:t}
-#           }
-#           sudo rm -rf zsh-tmp a.tzst
-
-#       - name: install qemu-user
-#         if: fromJson(env.neither_x86_nor_loong)
-#         run: apt-install qemu-user-static
-
-#       - name: fetch zsh for non-loong64
-#         if: fromJson(env.non_loong)
-#         env:
-#           img: ghcr.io/2moe/zsh-static:${{matrix.arch}}
-#         run: docker run --rm -v $PWD/rootfs/bin/:/host $img cp zsh busybox /host
-
-#       - name: update mirror src
-#         if: fromJSON(env.deb_main_supported) && env.CODENAME == 'sid'
-#         env:
-#           mirror_src: "rootfs/etc/apt/sources.list.d/mirror.sources"
-#         run: |
-#           awk_args=(
-#             -v true=1
-#             -v false=0
-#             -v mirror_url='https://cloudflaremirrors.com/debian/'
-#             '/experimental/ {
-#               cond = true
-#             }
-#             /-debug/ {
-#               cond = false
-#             }
-#             /snapshot\.debian/ {
-#               if ($1 == "URIs:") {
-#                 sub($0, sprintf("%s %s", $1, mirror_url))
-#               }
-#             }
-#             cond && /Enabled:/ {
-#               sub("no", "yes")
-#               cond = false
-#             }
-#             { print }'
-#             ${mirror_src}.bak
-#           )
-#           sudo cp -vf $mirror_src ${mirror_src}.bak
-#           awk $awk_args | sudo tee ${mirror_src}
-
-#       - name: copy newer GNU-parted to old-old system
-#         run: |
-#             # Note: outputs.name = stretch => ubuntu 16.04 ~ 17.10
-#             case ${{steps.codename.outputs.name}} {
-#               (jessie|stretch)
-#                 case ${{env.CODENAME}} {
-#                   (stretch|zesty|artful) exit 0;;
-#                 } ;;
-#               (*) exit 0;;
-#             }
-#             docker run --rm -v $PWD/rootfs/var/lib/:/host ghcr.io/2cd/pkgs:parted-${{matrix.arch}} cp -a /var/lib/tmm /host
-
-#       - name: setup ssh server
-#         run: |
-#           sudo rm -vf rootfs/etc/resolv.conf ||:
-#           uuu_keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg
-#           if [[ -e $uuu_keyring ]] {
-#             sudo cp -vf $uuu_keyring rootfs$uuu_keyring
-#           }
-
-#           single_arg=$(<<'CTR_ARG'
-#             for i (zsh busybox) {
-#               ln -vf /bin/$i /bin/${i}-static
-#             }
-#             makedev_src=/var/lib/dpkg/info/makedev.postinst
-#             if [[ -e $makedev_src && ${{steps.codename.outputs.name}} == jessie ]] {
-#               sed '1a exit 0' -i $makedev_src
-#             }
-#             apt-install ||:
-#             apt-get upgrade -y
-#             apt-install openssh-server
-#             ssh-keygen -A ||:
-#             apt-install systemd ||:
-#             rm -fv /etc/resolv.conf
-
-#             systemd_init=/lib/systemd/systemd
-
-#             # fix stretch no-init
-#             if [[ -e $systemd_init && ! -e /sbin/init ]] {
-#               ln -svf ..${systemd_init} /sbin/init
-#             }
-#             if [[ -x /bin/systemctl ]] {
-#               for bin (poweroff reboot halt) {
-#                 sysv=/sbin/$bin
-#                 if [[ ! -e $sysv ]] {
-#                   ln -svf ../bin/systemctl $sysv
-#                 }
-#               }
-#             }
-
-#             # allow root to login without passwd in TTY
-#             sed -E '/^root:/ s@(root:)[^:]+(:)@\1\2@' -i /etc/shadow
-
-#             chsh -s /bin/zsh
-#           CTR_ARG
-#           )
-#           print -R "$single_arg" > install-sshd.zsh
-
-#           if { ${{env.non_loong}} } {
-#             sudo systemd-nspawn -E "${{env.DEB_ENV}}" -D rootfs zsh -fexc "$single_arg"
-#           }
-
-#           cp -va ${{env.DEV_DIR}}/ssh .
-
-#           key=ssh/vm.ed25519
-#           ssh-keygen -t ed25519 -f $key -N ""
-#           ssh_client_d=rootfs/root/.ssh
-#           for i ($ssh_client_d) {
-#             sudo install -Dm600 ${key}.pub $i/authorized_keys
-#             sudo chmod 700 -v $i
-#           }
-#           sshd_cfg=ssh/vm.sshd.conf
-#           case ${{steps.codename.outputs.name}} {
-#             # wheezy|squeeze|lenny|etch|sarge|woody|potato|slink|hamm
-#             # trusty|utopic|vivid|wily|xenial|yakkety|zesty|artful|bionic|cosmic|disco|eoan
-#             #
-#             # 14.04 (trusty) ~ 15.10 => jessie
-#             # 16.04 (xenial) ~ 17.10 => stretch
-#             # 18.04 (bionic) ~ 19.10 => buster
-#             #
-#             (buster|stretch|jessie)
-#               cat $sshd_cfg | sudo tee -a rootfs/etc/ssh/sshd_config ;;
-#             (*) sudo install -Dm600 $sshd_cfg rootfs/etc/ssh/sshd_config.d/vm.conf ;;
-#           }
-#           unlink $sshd_cfg
-
-#           sudo cp -v ${{env.DEV_DIR}}/systemd/* rootfs/etc/systemd/system/
-
-#           for f (${{env.DEV_DIR}}/libexec/*) {
-#             sudo install -Dm700 $f rootfs/usr/libexec/tmm/qemu/${f:t}
-#           }
-
-#       - name: install kernel
-#         if: fromJSON(env.non_loong)
-#         run: |
-#           case ${{matrix.arch}} {
-#             (arm64|x64)     kernel=cloud-${{matrix.deb_arch}} ;;
-#             (armv7a)        kernel=armmp-lpae                 ;;
-#             (ppc64le)       kernel=powerpc64le                ;;
-#             (x86)           kernel=686-pae                    ;;
-#             (mips64le)      kernel=loongson-3                 ;;
-#             (mipsbe|mipsle) kernel=4kc-malta                  ;;
-#             (*)             kernel=${{matrix.deb_arch}}       ;;
-#           }
-#           codename=${{steps.codename.outputs.name}}
-#           case $codename {
-#             (stretch|jessie)
-#               case ${{matrix.arch}} {
-#                 (arm64|x64) kernel=${{matrix.deb_arch}} ;;
-#               }
-#             ;;
-#           }
-
-#           case ${{env.ROOTFS_REPO}} {
-#             (ubuntu:*)
-#               case ${{matrix.arch}} {
-#                   (x64|x86|ppc64le|s390x) kernel=virtual   ;;
-#                   (armv7a) kernel=linux-image-generic-lpae ;;
-#                   (*)
-#                       case $codename {
-#                           (jessie) kernel=generic ;;
-#                           (stretch)
-#                               case ${{env.CODENAME}} {
-#                                   (xenial) kernel=virtual-hwe-16.04 ;;
-#                                   (*)      kernel=virtual ;;
-#                               }
-#                           ;;
-#                           (*) kernel=virtual ;;
-#                       }
-#                   ;;
-#               }
-#               ;;
-#           }
-#           sudo cp -a rootfs kernel_r
-#           sudo systemd-nspawn -D kernel_r sh -c "apt-install linux-image-${kernel}||:"
-
-#       - name: setup loongarch environment
-#         if: fromJSON(env.is_loong)
-#         timeout-minutes: 30
-#         env:
-#           url: "https://github.com/2cd/debian-museum/releases/download/unstable/vm-dev_sid_x64.tar.zst"
-#         run: |
-#           ${{env.FETCH}} -o a.tzst $url
-#           mkdir -pv dev
-#           tar -C dev -xvf a.tzst
-#           qemu-img create -f raw dev/data.raw 2G
-#           sudo mkfs.ext4 -FL data dev/data.raw
-#           sudo mkdir -p data
-#           sudo mount -v dev/data.raw data
-#           sudo cp -a rootfs/* install-sshd.zsh data
-#           sudo umount -lvf data
-#           sed_args=(
-#             -E
-#             # dev/vdb
-#             -e 's@^(\s{2,})(disk.qcow2)$@\1\2\n\1data.raw@'
-#             -e 's@^(hostfwd)(_rules=)@\1_map+=(127.0.0.1:9022  9022)\n\1\2@'
-#             -i dev/run
-#           )
-#           sed $sed_args
-#           cd dev
-#           while {! sudo apt-get install} {
-#             sleep 3
-#           }
-#           sudo chmod 666 -v /dev/kvm
-#           ${{env.new_task}} ./run
-#           sleep 3
-#           sed -E 's@(IdentityFile)\s.*@\1 dev/ssh/vm.ed25519@' ssh/vm.sshconf > dev.conf
-#           cat dev.conf
-#           while {! ./connect-to-ssh exit} {
-#             sleep 1
-#           }
-
-#       - name: install sshd & kernel for loongarch
-#         if: fromJSON(env.is_loong)
-#         uses: 2moe/local-ssh-action@v0
-#         with:
-#           host: vm
-#           args: |
-#             -F
-#             dev/dev.conf
-#           run: |
-#             cd /root
-#             mkdir -p rootfs
-#             mount /dev/vdb rootfs
-
-#             if { ${{env.DEBUG_MODE}} } {
-#               src=/etc/apt/sources.list.d/mirror.sources
-#               sed_cmd=(sed -E 's@(https://).*@\1cloudflaremirrors.com/debian/@g' -i $src)
-#               systemd-nspawn -E "${{env.DEB_ENV}}" -D rootfs $sed_cmd
-#             }
-
-#             systemd-nspawn -E "${{env.DEB_ENV}}" -D rootfs zsh -fex /install-sshd.zsh
-#             systemd-nspawn -D rootfs unlink /install-sshd.zsh
-#             cp -a rootfs no-kernel
-
-#             systemd-nspawn -D rootfs sh -c "apt-install linux-image-${{matrix.deb_arch}}"
-#             cd rootfs
-#             ls -lh . boot
-#             tar -cf /root/kernel.tar boot initrd.* vmlinu*
-#             ${{env.new_task}} 'systemd-nspawn -bD ../no-kernel'
-
-#       - name: scp loongarch kernel.tar & unpack
-#         if: fromJSON(env.is_loong)
-#         run: |
-#           mkdir -p kernel_r
-#           ls -lh dev
-#           ./dev/get-file-from-vm /root/kernel.tar
-#           sudo tar -C kernel_r -xf Downloads/kernel.tar
-
-#       - name: copy kernel
-#         timeout-minutes: 12
-#         run: |
-#           sudo chown -R $UID:$GID kernel_r/boot
-#           cp -a kernel_r/boot .
-#           ls -lh kernel_r kernel_r/boot
-#           cd boot
-#           rm *.old ||:
-#           vmlinuz=(vmlinu*-*-*)
-#           mv -vf $vmlinuz[1] vmlinuz
-#           initrd=(initrd.img-*-*)
-#           mv -vf $initrd[1] initrd.img
-#           ls -lh
-#           cd ..
-#           ${{env.new_task}} 'sudo systemd-nspawn -bD rootfs'
-#           sleep 2
-#           while {! ${{env.SSH_VM}} exit} {
-#             sleep 1
-#           }
-
-#       - name: setup dhcp-network & serial
-#         uses: 2moe/local-ssh-action@v0
-#         with:
-#           host: vm
-#           args: |
-#             -F
-#             ssh/vm.sshconf
-#           run: |
-#             set -fexo pipefail
-#             # fix stretch, allow failure
-#             apt-install ifupdown udev parted
-#             for pkg (fdisk qemu-guest-agent dosfstools) {
-#               apt-install $pkg ||:
-#             }
-
-#             network_iface=${{matrix.net}}
-#             codename=${{steps.codename.outputs.name}}
-#             case $codename {
-#               (jessie)  network_iface=eth0 ;;
-#             }
-#             case ${{matrix.arch}} {
-#               (s390x)
-#                 case $codename {
-#                   (stretch)               network_iface=enp0s0   ;;
-#                   (buster|bullseye)       network_iface=enP1p0s0 ;;
-#                 }
-#               ;;
-#             }
-#             tty_serial=${{matrix.tty}}
-
-#             iface_dir=/etc/network/interfaces.d
-#             mkdir -p $iface_dir
-#             printf "%s\n" "auto lo" "iface lo inet loopback" > $iface_dir/loopback
-#             printf "%s\n" "auto $network_iface" "iface $network_iface inet dhcp" > $iface_dir/virtio-net
-
-#             cd $(mktemp -d)
-#             printf "%s\n" 'nameserver 10.0.2.3' 'nameserver 1.1.1.1' > resolv.conf
-#             install -m644 resolv.conf /etc/resolv.conf
-
-#             # SERIAL
-#             tty_tmpl=/usr/lib/systemd/system/serial-getty@.service
-#             tty_service=/etc/systemd/system/serial-getty@${tty_serial}.service
-
-#             if [[ -e $tty_tmpl ]] {
-#               cp $tty_tmpl $tty_service
-#               sed -E '/ExecStart=/ s@(%I|-) \$TERM$@--autologin root --local-line \1 xterm@' -i $tty_service
-#               cat $tty_service
-#             }
-
-#             for service (
-#               unsafe-resize-disk.service
-#               add-cloudflare-dns.service
-#             ) {
-#               systemctl enable $service
-#             }
-
-#             systemctl disable systemd-networkd-wait-online.service ||:
-#             systemctl set-default multi-user.target
-
-#             case ${{matrix.arch}} {
-#               (mips64le) systemctl enable force-sync-time.service ;;
-#             }
-#             timeout 2 timedatectl set-ntp yes ||:
-#             timeout 3 timedatectl show ||:
-#             # apt-get autopurge -y
-#             apt-get autoremove --purge ||:
-#             apt-get clean
-#             ls -lh /var/cache/apt
-#             rm -vf /var/lib/apt/lists/*.* ||:
-#             df -Th
-#             journalctl --rotate ||:
-#             journalctl --vacuum-time=1s ||:
-
-#       - name: quit systemd-container
-#         run: |
-#           ${{env.SSH_VM}} poweroff ||:
-
-#       - name: copy no-kernel rootfs to vdb
-#         if: fromJSON(env.is_loong)
-#         uses: 2moe/local-ssh-action@v0
-#         with:
-#           host: vm
-#           args: |
-#             -F
-#             dev/dev.conf
-#           run: |
-#             chmod 777 -R rootfs
-#             rm -rf rootfs/* ||:
-#             umount -lvf /dev/vdb
-#             mkfs.ext4 -FL data /dev/vdb
-#             mkdir data
-#             mount /dev/vdb data
-#             ls -lah data
-#             cp -a no-kernel/* data
-
-#       - name: Shutdown DEV-VM
-#         if: fromJSON(env.is_loong)
-#         run: |
-#           ssh -F dev/dev.conf vm poweroff ||:
-
-#       - name: mount loongarch data to rootfs
-#         if: fromJSON(env.is_loong)
-#         run: |
-#           while {lsof dev/data.raw} {
-#             sleep 1
-#           }
-#           sudo chmod 777 -R rootfs
-#           sudo rm -rf rootfs
-#           mkdir -p rootfs
-#           sudo mount -v dev/data.raw rootfs
-
-#       - name: disk partition
-#         timeout-minutes: 30
-#         id: disk_partition
-#         run: |
-#           while {! sudo apt-get install} {
-#             sleep 2
-#           }
-#           qemu-img --version
-#           qemu-img create -f raw disk.img 1G
-#           print -R ,,L | sudo sfdisk disk.img
-
-#           loop_dev=$(sudo losetup -f)
-#           sudo losetup $loop_dev disk.img
-#           sudo losetup --all
-#           sudo kpartx -va $loop_dev
-#           p1=/dev/mapper/${loop_dev:t}p1
-
-#           outputs=(
-#             "dev=$loop_dev"
-#             # "p1=$p1"
-#           )
-#           printf "%s\n" $outputs >> $GITHUB_OUTPUT
-#           #
-#           sudo mkfs.ext4 -FL rootfs $p1
-#           sudo mkdir -p disk
-#           #
-#           sudo mount -v $p1 disk
-#           lsblk
-#           #
-#           sudo cp -a rootfs/* disk
-#           sudo umount -lvf disk
-#           cp -vf 2>/dev/null ${{env.DEV_DIR}}/* . ||:
-
-#       - if: matrix.arch != 'x64'
-#         run: |
-#           sed_args=(
-#             -E
-#             -e 's@^(qemu_arch)=.*@\1=${{matrix.arch}}@'
-#             -i run
-#           )
-#           sed $sed_args
-
-#       - name: download EFI
-#         if: fromJson(env.non_x86)
-#         env:
-#           efi_file: boot/EFI.fd
-#         run: |
-#           unset url
-#           case ${{matrix.arch}} {
-#             (arm64)   url='https://retrage.github.io/edk2-nightly/bin/RELEASEAARCH64_QEMU_EFI.fd' ;;
-#             (armv7a) url='https://retrage.github.io/edk2-nightly/bin/RELEASEARM_QEMU_EFI.fd' ;;
-#             (loong64) url='https://mirrors.pku.edu.cn/loongarch/archlinux/images/QEMU_EFI_8.1.fd' ;;
-#           }
-#           if (($+url)) {
-#             ${{env.FETCH}} -o "$efi_file" $url
-#             size=$(stat -c %s "$efi_file")
-#             if ((size <= 4096)) {
-#               exit 1
-#             }
-#           }
-
-#       - name: pack vm
-#         run: |
-#           cat run
-#           loop_dev=${{steps.disk_partition.outputs.dev}}
-#           sudo kpartx -dv $loop_dev ||:
-#           sudo losetup --detach $loop_dev ||:
-#           apt-install b3sum
-
-#           files=(
-#             *.img
-#             run
-#             Readme.md
-#             connect-to-ssh
-#             get-file-from-vm
-#             send-file-to-vm
-#           )
-#           rm -rf boot/grub ||:
-#           for f ($files ssh/* boot/*) {
-#               b3sum $f >> blake3.txt
-#           }
-#           for f (ssh boot blake3.txt) {
-#             files+=$f
-#           }
-
-#           tzst_file=vm-minimal_${{env.CODENAME}}_${{matrix.arch}}.tar.zst
-#           args=(
-#             --posix
-#             --use-compress-program='zstdmt --long -18v'
-#             -cf $tzst_file
-#             $files
-#           )
-#           tar $args
-#           ln -vf $tzst_file ${{env.DOCKER_DIR}}
-
-#       - name: set_runner_arch
-#         id: set_runner_arch
-#         run: |
-#           case ${{matrix.arch}} {
-#             (arm64) outputs=(runner_arch=arm64  platform=linux/arm64 ) ;;
-#             (*) outputs=( runner_arch=x64  platform=linux/amd64 )      ;;
-#           }
-#           printf "%s\n" $outputs >> $GITHUB_OUTPUT
-
-#       - name: release
-#         uses: softprops/action-gh-release@v2
-#         with:
-#           fail_on_unmatched_files: true
-#           tag_name: ${{env.RELEASE_TAG}}
-#           files: |
-#             *.tar.zst
-
-#       - name: Login to GHCR
-#         uses: docker/login-action@v3
-#         with:
-#           registry: ghcr.io
-#           username: ${{ github.actor }}
-#           password: ${{ secrets.GITHUB_TOKEN }}
-
-#       - name: Build and push
-#         uses: docker/build-push-action@v5
-#         with:
-#           context: ${{env.DOCKER_DIR}}
-#           push: true
-#           tags: ghcr.io/2cd/${{env.OS}}-vm:${{env.CODENAME}}-minimal-${{matrix.arch}}
-#           platforms: ${{steps.set_runner_arch.outputs.platform}}
-#           build-args: |
-#             RUNNER_ARCH=${{steps.set_runner_arch.outputs.runner_arch}}
+name: minimal virtual machine
+# auto-task.start-build-time = ?
+
+env:
+  # DEBIAN_FRONTEND: noninteractive
+  DOCKER_DIR: assets/pack-vm-to-docker
+  DEB_ENV: "DEBIAN_FRONTEND=noninteractive"
+  DEV_DIR: assets/vm-minimal
+  SSH_VM: "ssh -F ssh/vm.sshconf vm"
+  FETCH: "aria2c -s5 -x5 -k1m --no-conf"
+  new_task: "tmux new-session -d"
+  #
+  # [sid]
+  # RELEASE_TAG: unstable
+  # CODENAME: sid
+  # ROOTFS_REPO: "debian-sid:"
+  #
+  # [trixie]
+  # RELEASE_TAG: 13
+  # CODENAME: "trixie"
+  # ROOTFS_REPO: "debian:trixie-"
+  #
+  # [bookworm]
+  # RELEASE_TAG: 12
+  # CODENAME: "bookworm"
+  # ROOTFS_REPO: "debian:bookworm-"
+  #
+  # [bullseye]
+  # RELEASE_TAG: 11
+  # CODENAME: "bullseye"
+  # ROOTFS_REPO: "debian:bullseye-"
+  #
+  # [buster]
+  # RELEASE_TAG: 10
+  # CODENAME: "buster"
+  # ROOTFS_REPO: "debian:buster-"
+  #
+  # [stretch]
+  # RELEASE_TAG: 9
+  # CODENAME: "stretch"
+  # ROOTFS_REPO: "debian:stretch-"
+  #
+  # [jessie]
+  # RELEASE_TAG: 8
+  # CODENAME: "jessie"
+  # ROOTFS_REPO: "debian:jessie-"
+
+  # OS: debian
+  #
+  ##
+  # print "
+  # 14.04 trusty, 14.10 utopic,  15.04 vivid,   15.10 wily
+  # 16.04 xenial, 16.10 yakkety, 17.04 zesty,   17.10 artful
+  # 18.04 bionic, 18.10 cosmic,  19.04 disco,   19.10 eoan
+  # 20.04 focal,  20.10 groovy,  21.04 hirsute, 21.10 impish
+  # 22.04 jammy,  22.10 kinetic, 23.04 lunar,   23.10 mantic
+  # 24.04 noble" | awk -F', ' '{for(i=1;i<=NF;i++){split($i,a," "); print "["a[2]"]\nRELEASE_TAG: \""a[1]"\"\nCODENAME: \""a[2]"\"\nROOTFS_REPO: \"ubuntu:"a[2]"-\"\n"}}'
+  #
+  OS: ubuntu
+
+  # [vivid]
+  RELEASE_TAG: "15.04"
+  CODENAME: "vivid"
+  ROOTFS_REPO: "ubuntu:vivid-"
+  #
+  # [wily]
+  # RELEASE_TAG: "15.10"
+  # CODENAME: "wily"
+  # ROOTFS_REPO: "ubuntu:wily-"
+  #
+  # [xenial]
+  # RELEASE_TAG: "16.04"
+  # CODENAME: "xenial"
+  # ROOTFS_REPO: "ubuntu:xenial-"
+  #
+  # [yakkety]
+  # RELEASE_TAG: "16.10"
+  # CODENAME: "yakkety"
+  # ROOTFS_REPO: "ubuntu:yakkety-"
+  #
+  # [zesty]
+  # RELEASE_TAG: "17.04"
+  # CODENAME: "zesty"
+  # ROOTFS_REPO: "ubuntu:zesty-"
+  #
+  # [artful]
+  # RELEASE_TAG: "17.10"
+  # CODENAME: "artful"
+  # ROOTFS_REPO: "ubuntu:artful-"
+  #
+  # [bionic]
+  # RELEASE_TAG: "18.04"
+  # CODENAME: "bionic"
+  # ROOTFS_REPO: "ubuntu:bionic-"
+  #
+  # [cosmic]
+  # RELEASE_TAG: "18.10"
+  # CODENAME: "cosmic"
+  # ROOTFS_REPO: "ubuntu:cosmic-"
+  #
+  # [disco]
+  # RELEASE_TAG: "19.04"
+  # CODENAME: "disco"
+  # ROOTFS_REPO: "ubuntu:disco-"
+  #
+  # [eoan]
+  # RELEASE_TAG: "19.10"
+  # CODENAME: "eoan"
+  # ROOTFS_REPO: "ubuntu:eoan-"
+  #
+  # [focal]
+  # RELEASE_TAG: "20.04"
+  # CODENAME: "focal"
+  # ROOTFS_REPO: "ubuntu:focal-"
+  #
+  # [groovy]
+  # RELEASE_TAG: "20.10"
+  # CODENAME: "groovy"
+  # ROOTFS_REPO: "ubuntu:groovy-"
+  #
+  # [hirsute]
+  # RELEASE_TAG: "21.04"
+  # CODENAME: "hirsute"
+  # ROOTFS_REPO: "ubuntu:hirsute-"
+  #
+  # [impish]
+  # RELEASE_TAG: "21.10"
+  # CODENAME: "impish"
+  # ROOTFS_REPO: "ubuntu:impish-"
+  #
+  # [jammy]
+  # RELEASE_TAG: "22.04"
+  # CODENAME: "jammy"
+  # ROOTFS_REPO: "ubuntu:jammy-"
+  #
+  # [kinetic]
+  # RELEASE_TAG: "22.10"
+  # CODENAME: "kinetic"
+  # ROOTFS_REPO: "ubuntu:kinetic-"
+  #
+  # [lunar]
+  # RELEASE_TAG: "23.04"
+  # CODENAME: "lunar"
+  # ROOTFS_REPO: "ubuntu:lunar-"
+  #
+  # [mantic]
+  # RELEASE_TAG: "23.10"
+  # CODENAME: "mantic"
+  # ROOTFS_REPO: "ubuntu:mantic-"
+  #
+  # [noble]
+  # RELEASE_TAG: "24.04"
+  # CODENAME: "noble"
+  # ROOTFS_REPO: "ubuntu:noble-"
+
+on:
+  push:
+    # branches: ["build"]
+    paths:
+      - .github/workflows/vm-minimal.yml
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # PORTS
+          # - arch: loong64
+          #   deb_arch: loong64
+          #   qemu_pkg_arch: misc
+          #   tty: ttyS0
+          #   net: enp0s1
+          # # ------------------
+          # SID
+        #   - arch: rv64gc
+        #     deb_arch: riscv64
+        #     qemu_pkg_arch: misc
+        #     tty: ttyS0
+        #     net: eth0
+        #   # # ------------------
+        #   - arch: x64
+        #     deb_arch: amd64
+        #     qemu_pkg_arch: x86
+        #     tty: ttyS0
+        #     net: enp0s2
+
+        #   - arch: arm64
+        #     deb_arch: arm64
+        #     qemu_pkg_arch: arm
+        #     tty: ttyAMA0
+        #     net: enp0s1
+
+          - arch: armv7a
+            deb_arch: armhf
+            qemu_pkg_arch: arm
+            tty: ttyAMA0
+            net: enp0s1
+
+        #   - arch: x86
+        #     deb_arch: i386
+        #     qemu_pkg_arch: x86
+        #     tty: ttyS0
+        #     net: ens3
+
+        #   - arch: ppc64le
+        #     deb_arch: ppc64el
+        #     qemu_pkg_arch: ppc
+        #     tty: hev0
+        #     net: enp0s0
+
+        #   - arch: s390x
+        #     deb_arch: s390x
+        #     qemu_pkg_arch: misc
+        #     tty: ttysclp0
+        #     #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
+        #     net: eno1
+
+          # ------------------------
+          # - arch: mips64le
+          #   deb_arch: mips64el
+          #   qemu_pkg_arch: mips
+          #   tty: ttyS0
+          #   net: enp0s3
+          # ------------------------
+          # BOOKWORM
+          # - arch: mipsle
+          #   deb_arch: mipsel
+          #   qemu_pkg_arch: mips
+          #   tty: ttyS0
+          #   net: enp0s18
+          # ------------------------
+          # BUSTER
+          # - arch: mipsbe
+          #   deb_arch: mips
+          #   qemu_pkg_arch: mips
+          #   tty: ttyS0
+          #   net: enp0s18
+
+    runs-on: ubuntu-latest
+    env:
+      non_x86: ${{ !contains(fromJSON('["x64", "x86"]'), matrix.arch) }}
+      neither_x86_nor_loong: ${{ !contains(fromJSON('["x64", "x86", "loong64"]'), matrix.arch) }}
+      non_loong: ${{ matrix.arch != 'loong64' }}
+      is_loong: ${{ matrix.arch == 'loong64' }}
+      deb_main_supported: ${{ contains(fromJSON('["x64", "x86", "arm64", "armv7a", "rv64gc", "ppc64le", "s390x", "mips64le"]'), matrix.arch) }}
+
+      DEBUG_MODE: false
+      #
+      # debug:
+      # non_loong: ${{ matrix.arch != 'x64' }}
+      # is_loong: ${{ matrix.arch == 'x64' }}
+      # deb_main_supported: ${{ contains(fromJSON('["x86", "arm64", "rv64gc", "ppc64le", "s390x", "mips64le"]'), matrix.arch) }}
+
+    defaults:
+      run:
+        shell: zsh --pipefail -fex {0}
+    steps:
+      - name: install zsh
+        if: runner.arch == 'X64'
+        shell: sh -e {0}
+        run: ${{ vars.INSTALL_ZSH }}
+
+      - name: set deb codename map
+        id: codename
+        run: |
+          local -A map=(
+            # jessie  jessie
+            trusty  jessie
+            utopic  jessie
+            vivid   jessie
+            wily    jessie
+
+            # stretch stretch
+            xenial  stretch
+            yakkety stretch
+            stretch stretch
+            artful  stretch
+
+            # buster  buster
+            bionic  buster
+            cosmic  buster
+            disco   buster
+            eoan    buster
+
+            # bullseye bullseye
+            focal    bullseye
+            groovy   bullseye
+            hirsute  bullseye
+            impish   bullseye
+
+            # bookworm bookworm
+            jammy    bookworm
+            kinetic  bookworm
+            lunar    bookworm
+            mantic   bookworm
+
+            # trixie   trixie
+            noble    trixie
+          )
+          code=${{env.CODENAME}}
+          name=$map[$code]
+          if ((! #name)) {
+            name=$code
+          }
+          print -R "name=$name" >> $GITHUB_OUTPUT
+
+      - uses: actions/checkout@v4
+        with:
+          repository: 2cd/debian-museum
+          ref: build
+
+      - name: export rootfs
+        env:
+          scripts: "${{env.DEV_DIR}}/scripts/*"
+        run: |
+          sudo cp -pv ${{env.scripts}} /usr/local/bin
+
+          pkgs=(aria2 qemu-utils)
+          if { ${{env.non_loong}} } {
+            pkgs+=(systemd-container)
+          }
+          apt-install $pkgs &
+          task=$!
+
+          image=ghcr.io/2cd/${{env.ROOTFS_REPO}}${{matrix.arch}}
+          docker pull $image
+          name=$(docker create $image)
+          docker export $name -o rootfs.tar
+          sudo mkdir -pv rootfs
+          sudo tar -C rootfs --overwrite -xf rootfs.tar
+          unlink rootfs.tar
+          sudo cp -pv ${{env.scripts}} rootfs/usr/local/bin
+          docker rm $name
+          wait $task
+
+      - name: fetch zsh & busybox for loong64
+        if: fromJSON(env.is_loong)
+        env:
+          url: "https://github.com/2moe/zsh-static-docker/releases/download/latest/zsh-${{matrix.arch}}.tar.zst"
+        run: |
+          ${{env.new_task}} "apt-install qemu-system-x86"
+          ${{env.FETCH}} -o a.tzst $url
+          mkdir -p zsh-tmp
+          tar -C zsh-tmp -xf a.tzst ||:
+          for bin (zsh-tmp/opt/bin/{zsh,busybox}) {
+            sudo install -Dm755 $bin rootfs/bin/${bin:t}
+          }
+          sudo rm -rf zsh-tmp a.tzst
+
+      - name: install qemu-user
+        if: fromJson(env.neither_x86_nor_loong)
+        run: apt-install qemu-user-static
+
+      - name: fetch zsh for non-loong64
+        if: fromJson(env.non_loong)
+        env:
+          img: ghcr.io/2moe/zsh-static:${{matrix.arch}}
+        run: docker run --rm -v $PWD/rootfs/bin/:/host $img cp zsh busybox /host
+
+      - name: update mirror src
+        if: fromJSON(env.deb_main_supported) && env.CODENAME == 'sid'
+        env:
+          mirror_src: "rootfs/etc/apt/sources.list.d/mirror.sources"
+        run: |
+          awk_args=(
+            -v true=1
+            -v false=0
+            -v mirror_url='https://cloudflaremirrors.com/debian/'
+            '/experimental/ {
+              cond = true
+            }
+            /-debug/ {
+              cond = false
+            }
+            /snapshot\.debian/ {
+              if ($1 == "URIs:") {
+                sub($0, sprintf("%s %s", $1, mirror_url))
+              }
+            }
+            cond && /Enabled:/ {
+              sub("no", "yes")
+              cond = false
+            }
+            { print }'
+            ${mirror_src}.bak
+          )
+          sudo cp -vf $mirror_src ${mirror_src}.bak
+          awk $awk_args | sudo tee ${mirror_src}
+
+      - name: copy newer GNU-parted to old-old system
+        run: |
+            # Note: outputs.name = stretch => ubuntu 16.04 ~ 17.10
+            case ${{steps.codename.outputs.name}} {
+              (jessie|stretch)
+                case ${{env.CODENAME}} {
+                  (stretch|zesty|artful) exit 0;;
+                } ;;
+              (*) exit 0;;
+            }
+            docker run --rm -v $PWD/rootfs/var/lib/:/host ghcr.io/2cd/pkgs:parted-${{matrix.arch}} cp -a /var/lib/tmm /host
+
+      - name: setup ssh server
+        run: |
+          sudo rm -vf rootfs/etc/resolv.conf ||:
+          uuu_keyring=/usr/share/keyrings/ubuntu-archive-keyring.gpg
+          if [[ -e $uuu_keyring ]] {
+            sudo cp -vf $uuu_keyring rootfs$uuu_keyring
+          }
+
+          single_arg=$(<<'CTR_ARG'
+            for i (zsh busybox) {
+              ln -vf /bin/$i /bin/${i}-static
+            }
+            makedev_src=/var/lib/dpkg/info/makedev.postinst
+            if [[ -e $makedev_src && ${{steps.codename.outputs.name}} == jessie ]] {
+              sed '1a exit 0' -i $makedev_src
+            }
+            apt-install ||:
+            apt-get upgrade -y
+            apt-install openssh-server
+            ssh-keygen -A ||:
+            apt-install systemd ||:
+            rm -fv /etc/resolv.conf
+
+            systemd_init=/lib/systemd/systemd
+
+            # fix stretch no-init
+            if [[ -e $systemd_init && ! -e /sbin/init ]] {
+              ln -svf ..${systemd_init} /sbin/init
+            }
+            if [[ -x /bin/systemctl ]] {
+              for bin (poweroff reboot halt) {
+                sysv=/sbin/$bin
+                if [[ ! -e $sysv ]] {
+                  ln -svf ../bin/systemctl $sysv
+                }
+              }
+            }
+
+            # allow root to login without passwd in TTY
+            sed -E '/^root:/ s@(root:)[^:]+(:)@\1\2@' -i /etc/shadow
+
+            chsh -s /bin/zsh
+          CTR_ARG
+          )
+          print -R "$single_arg" > install-sshd.zsh
+
+          if { ${{env.non_loong}} } {
+            sudo systemd-nspawn -E "${{env.DEB_ENV}}" -D rootfs zsh -fexc "$single_arg"
+          }
+
+          cp -va ${{env.DEV_DIR}}/ssh .
+
+          key=ssh/vm.ed25519
+          ssh-keygen -t ed25519 -f $key -N ""
+          ssh_client_d=rootfs/root/.ssh
+          for i ($ssh_client_d) {
+            sudo install -Dm600 ${key}.pub $i/authorized_keys
+            sudo chmod 700 -v $i
+          }
+          sshd_cfg=ssh/vm.sshd.conf
+          case ${{steps.codename.outputs.name}} {
+            # wheezy|squeeze|lenny|etch|sarge|woody|potato|slink|hamm
+            # trusty|utopic|vivid|wily|xenial|yakkety|zesty|artful|bionic|cosmic|disco|eoan
+            #
+            # 14.04 (trusty) ~ 15.10 => jessie
+            # 16.04 (xenial) ~ 17.10 => stretch
+            # 18.04 (bionic) ~ 19.10 => buster
+            #
+            (buster|stretch|jessie)
+              cat $sshd_cfg | sudo tee -a rootfs/etc/ssh/sshd_config ;;
+            (*) sudo install -Dm600 $sshd_cfg rootfs/etc/ssh/sshd_config.d/vm.conf ;;
+          }
+          unlink $sshd_cfg
+
+          sudo cp -v ${{env.DEV_DIR}}/systemd/* rootfs/etc/systemd/system/
+
+          for f (${{env.DEV_DIR}}/libexec/*) {
+            sudo install -Dm700 $f rootfs/usr/libexec/tmm/qemu/${f:t}
+          }
+
+      - name: install kernel
+        if: fromJSON(env.non_loong)
+        run: |
+          case ${{matrix.arch}} {
+            (arm64|x64)     kernel=cloud-${{matrix.deb_arch}} ;;
+            (armv7a)        kernel=armmp-lpae                 ;;
+            (ppc64le)       kernel=powerpc64le                ;;
+            (x86)           kernel=686-pae                    ;;
+            (mips64le)      kernel=loongson-3                 ;;
+            (mipsbe|mipsle) kernel=4kc-malta                  ;;
+            (*)             kernel=${{matrix.deb_arch}}       ;;
+          }
+          codename=${{steps.codename.outputs.name}}
+          case $codename {
+            (stretch|jessie)
+              case ${{matrix.arch}} {
+                (arm64|x64) kernel=${{matrix.deb_arch}} ;;
+              }
+            ;;
+          }
+
+          case ${{env.ROOTFS_REPO}} {
+            (ubuntu:*)
+              case ${{matrix.arch}} {
+                  (x64|x86|ppc64le|s390x) kernel=virtual   ;;
+                  (armv7a) kernel=generic-lpae ;;
+                  (*)
+                      case $codename {
+                          (jessie) kernel=generic ;;
+                          (stretch)
+                              case ${{env.CODENAME}} {
+                                  (xenial) kernel=virtual-hwe-16.04 ;;
+                                  (*)      kernel=virtual ;;
+                              }
+                          ;;
+                          (*) kernel=virtual ;;
+                      }
+                  ;;
+              }
+              ;;
+          }
+          sudo cp -a rootfs kernel_r
+          sudo systemd-nspawn -D kernel_r sh -c "apt-install linux-image-${kernel}||:"
+
+      - name: setup loongarch environment
+        if: fromJSON(env.is_loong)
+        timeout-minutes: 30
+        env:
+          url: "https://github.com/2cd/debian-museum/releases/download/unstable/vm-dev_sid_x64.tar.zst"
+        run: |
+          ${{env.FETCH}} -o a.tzst $url
+          mkdir -pv dev
+          tar -C dev -xvf a.tzst
+          qemu-img create -f raw dev/data.raw 2G
+          sudo mkfs.ext4 -FL data dev/data.raw
+          sudo mkdir -p data
+          sudo mount -v dev/data.raw data
+          sudo cp -a rootfs/* install-sshd.zsh data
+          sudo umount -lvf data
+          sed_args=(
+            -E
+            # dev/vdb
+            -e 's@^(\s{2,})(disk.qcow2)$@\1\2\n\1data.raw@'
+            -e 's@^(hostfwd)(_rules=)@\1_map+=(127.0.0.1:9022  9022)\n\1\2@'
+            -i dev/run
+          )
+          sed $sed_args
+          cd dev
+          while {! sudo apt-get install} {
+            sleep 3
+          }
+          sudo chmod 666 -v /dev/kvm
+          ${{env.new_task}} ./run
+          sleep 3
+          sed -E 's@(IdentityFile)\s.*@\1 dev/ssh/vm.ed25519@' ssh/vm.sshconf > dev.conf
+          cat dev.conf
+          while {! ./connect-to-ssh exit} {
+            sleep 1
+          }
+
+      - name: install sshd & kernel for loongarch
+        if: fromJSON(env.is_loong)
+        uses: 2moe/local-ssh-action@v0
+        with:
+          host: vm
+          args: |
+            -F
+            dev/dev.conf
+          run: |
+            cd /root
+            mkdir -p rootfs
+            mount /dev/vdb rootfs
+
+            if { ${{env.DEBUG_MODE}} } {
+              src=/etc/apt/sources.list.d/mirror.sources
+              sed_cmd=(sed -E 's@(https://).*@\1cloudflaremirrors.com/debian/@g' -i $src)
+              systemd-nspawn -E "${{env.DEB_ENV}}" -D rootfs $sed_cmd
+            }
+
+            systemd-nspawn -E "${{env.DEB_ENV}}" -D rootfs zsh -fex /install-sshd.zsh
+            systemd-nspawn -D rootfs unlink /install-sshd.zsh
+            cp -a rootfs no-kernel
+
+            systemd-nspawn -D rootfs sh -c "apt-install linux-image-${{matrix.deb_arch}}"
+            cd rootfs
+            ls -lh . boot
+            tar -cf /root/kernel.tar boot initrd.* vmlinu*
+            ${{env.new_task}} 'systemd-nspawn -bD ../no-kernel'
+
+      - name: scp loongarch kernel.tar & unpack
+        if: fromJSON(env.is_loong)
+        run: |
+          mkdir -p kernel_r
+          ls -lh dev
+          ./dev/get-file-from-vm /root/kernel.tar
+          sudo tar -C kernel_r -xf Downloads/kernel.tar
+
+      - name: copy kernel
+        timeout-minutes: 12
+        run: |
+          sudo chown -R $UID:$GID kernel_r/boot
+          cp -a kernel_r/boot .
+          ls -lh kernel_r kernel_r/boot
+          cd boot
+          rm *.old ||:
+          vmlinuz=(vmlinu*-*-*)
+          mv -vf $vmlinuz[1] vmlinuz
+          initrd=(initrd.img-*-*)
+          mv -vf $initrd[1] initrd.img
+          ls -lh
+          cd ..
+          ${{env.new_task}} 'sudo systemd-nspawn -bD rootfs'
+          sleep 2
+          while {! ${{env.SSH_VM}} exit} {
+            sleep 1
+          }
+
+      - name: setup dhcp-network & serial
+        uses: 2moe/local-ssh-action@v0
+        with:
+          host: vm
+          args: |
+            -F
+            ssh/vm.sshconf
+          run: |
+            set -fexo pipefail
+            # fix stretch, allow failure
+            apt-install ifupdown udev parted
+            for pkg (fdisk qemu-guest-agent dosfstools) {
+              apt-install $pkg ||:
+            }
+
+            network_iface=${{matrix.net}}
+            codename=${{steps.codename.outputs.name}}
+            case $codename {
+              (jessie)  network_iface=eth0 ;;
+            }
+            case ${{matrix.arch}} {
+              (s390x)
+                case $codename {
+                  (stretch)               network_iface=enp0s0   ;;
+                  (buster|bullseye)       network_iface=enP1p0s0 ;;
+                }
+              ;;
+            }
+            tty_serial=${{matrix.tty}}
+
+            iface_dir=/etc/network/interfaces.d
+            mkdir -p $iface_dir
+            printf "%s\n" "auto lo" "iface lo inet loopback" > $iface_dir/loopback
+            printf "%s\n" "auto $network_iface" "iface $network_iface inet dhcp" > $iface_dir/virtio-net
+
+            cd $(mktemp -d)
+            printf "%s\n" 'nameserver 10.0.2.3' 'nameserver 1.1.1.1' > resolv.conf
+            install -m644 resolv.conf /etc/resolv.conf
+
+            # SERIAL
+            tty_tmpl=/usr/lib/systemd/system/serial-getty@.service
+            tty_service=/etc/systemd/system/serial-getty@${tty_serial}.service
+
+            if [[ -e $tty_tmpl ]] {
+              cp $tty_tmpl $tty_service
+              sed -E '/ExecStart=/ s@(%I|-) \$TERM$@--autologin root --local-line \1 xterm@' -i $tty_service
+              cat $tty_service
+            }
+
+            for service (
+              unsafe-resize-disk.service
+              add-cloudflare-dns.service
+            ) {
+              systemctl enable $service
+            }
+
+            systemctl disable systemd-networkd-wait-online.service ||:
+            systemctl set-default multi-user.target
+
+            case ${{matrix.arch}} {
+              (mips64le) systemctl enable force-sync-time.service ;;
+            }
+            timeout 2 timedatectl set-ntp yes ||:
+            timeout 3 timedatectl show ||:
+            # apt-get autopurge -y
+            apt-get autoremove --purge ||:
+            apt-get clean
+            ls -lh /var/cache/apt
+            rm -vf /var/lib/apt/lists/*.* ||:
+            df -Th
+            journalctl --rotate ||:
+            journalctl --vacuum-time=1s ||:
+
+      - name: quit systemd-container
+        run: |
+          ${{env.SSH_VM}} poweroff ||:
+
+      - name: copy no-kernel rootfs to vdb
+        if: fromJSON(env.is_loong)
+        uses: 2moe/local-ssh-action@v0
+        with:
+          host: vm
+          args: |
+            -F
+            dev/dev.conf
+          run: |
+            chmod 777 -R rootfs
+            rm -rf rootfs/* ||:
+            umount -lvf /dev/vdb
+            mkfs.ext4 -FL data /dev/vdb
+            mkdir data
+            mount /dev/vdb data
+            ls -lah data
+            cp -a no-kernel/* data
+
+      - name: Shutdown DEV-VM
+        if: fromJSON(env.is_loong)
+        run: |
+          ssh -F dev/dev.conf vm poweroff ||:
+
+      - name: mount loongarch data to rootfs
+        if: fromJSON(env.is_loong)
+        run: |
+          while {lsof dev/data.raw} {
+            sleep 1
+          }
+          sudo chmod 777 -R rootfs
+          sudo rm -rf rootfs
+          mkdir -p rootfs
+          sudo mount -v dev/data.raw rootfs
+
+      - name: disk partition
+        timeout-minutes: 30
+        id: disk_partition
+        run: |
+          while {! sudo apt-get install} {
+            sleep 2
+          }
+          qemu-img --version
+          qemu-img create -f raw disk.img 1G
+          print -R ,,L | sudo sfdisk disk.img
+
+          loop_dev=$(sudo losetup -f)
+          sudo losetup $loop_dev disk.img
+          sudo losetup --all
+          sudo kpartx -va $loop_dev
+          p1=/dev/mapper/${loop_dev:t}p1
+
+          outputs=(
+            "dev=$loop_dev"
+            # "p1=$p1"
+          )
+          printf "%s\n" $outputs >> $GITHUB_OUTPUT
+          #
+          sudo mkfs.ext4 -FL rootfs $p1
+          sudo mkdir -p disk
+          #
+          sudo mount -v $p1 disk
+          lsblk
+          #
+          sudo cp -a rootfs/* disk
+          sudo umount -lvf disk
+          cp -vf 2>/dev/null ${{env.DEV_DIR}}/* . ||:
+
+      - if: matrix.arch != 'x64'
+        run: |
+          sed_args=(
+            -E
+            -e 's@^(qemu_arch)=.*@\1=${{matrix.arch}}@'
+            -i run
+          )
+          sed $sed_args
+
+      - name: download EFI
+        if: fromJson(env.non_x86)
+        env:
+          efi_file: boot/EFI.fd
+        run: |
+          unset url
+          case ${{matrix.arch}} {
+            (arm64)   url='https://retrage.github.io/edk2-nightly/bin/RELEASEAARCH64_QEMU_EFI.fd' ;;
+            (armv7a) url='https://retrage.github.io/edk2-nightly/bin/RELEASEARM_QEMU_EFI.fd' ;;
+            (loong64) url='https://mirrors.pku.edu.cn/loongarch/archlinux/images/QEMU_EFI_8.1.fd' ;;
+          }
+          if (($+url)) {
+            ${{env.FETCH}} -o "$efi_file" $url
+            size=$(stat -c %s "$efi_file")
+            if ((size <= 4096)) {
+              exit 1
+            }
+          }
+
+      - name: pack vm
+        run: |
+          cat run
+          loop_dev=${{steps.disk_partition.outputs.dev}}
+          sudo kpartx -dv $loop_dev ||:
+          sudo losetup --detach $loop_dev ||:
+          apt-install b3sum
+
+          files=(
+            *.img
+            run
+            Readme.md
+            connect-to-ssh
+            get-file-from-vm
+            send-file-to-vm
+          )
+          rm -rf boot/grub ||:
+          for f ($files ssh/* boot/*) {
+              b3sum $f >> blake3.txt
+          }
+          for f (ssh boot blake3.txt) {
+            files+=$f
+          }
+
+          tzst_file=vm-minimal_${{env.CODENAME}}_${{matrix.arch}}.tar.zst
+          args=(
+            --posix
+            --use-compress-program='zstdmt --long -18v'
+            -cf $tzst_file
+            $files
+          )
+          tar $args
+          ln -vf $tzst_file ${{env.DOCKER_DIR}}
+
+      - name: set_runner_arch
+        id: set_runner_arch
+        run: |
+          case ${{matrix.arch}} {
+            (arm64) outputs=(runner_arch=arm64  platform=linux/arm64 ) ;;
+            (*) outputs=( runner_arch=x64  platform=linux/amd64 )      ;;
+          }
+          printf "%s\n" $outputs >> $GITHUB_OUTPUT
+
+      - name: release
+        uses: softprops/action-gh-release@v2
+        with:
+          fail_on_unmatched_files: true
+          tag_name: ${{env.RELEASE_TAG}}
+          files: |
+            *.tar.zst
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{env.DOCKER_DIR}}
+          push: true
+          tags: ghcr.io/2cd/${{env.OS}}-vm:${{env.CODENAME}}-minimal-${{matrix.arch}}
+          platforms: ${{steps.set_runner_arch.outputs.platform}}
+          build-args: |
+            RUNNER_ARCH=${{steps.set_runner_arch.outputs.runner_arch}}
 

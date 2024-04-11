@@ -504,7 +504,7 @@ jobs:
             (ubuntu:*)
               case ${{matrix.arch}} {
                   (x64|x86|ppc64le|s390x) kernel=virtual   ;;
-                  (armv7a) kernel=linux-image-generic-lpae ;;
+                  (armv7a) kernel=generic-lpae ;;
                   (*)
                       case $codename {
                           (jessie) kernel=generic ;;
