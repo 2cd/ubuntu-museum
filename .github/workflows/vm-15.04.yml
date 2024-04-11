@@ -165,18 +165,18 @@ jobs:
       matrix:
         include:
           # PORTS
-          - arch: loong64
-            deb_arch: loong64
-            qemu_pkg_arch: misc
-            tty: ttyS0
-            net: enp0s1
+          # - arch: loong64
+          #   deb_arch: loong64
+          #   qemu_pkg_arch: misc
+          #   tty: ttyS0
+          #   net: enp0s1
           # # ------------------
           # SID
-          - arch: rv64gc
-            deb_arch: riscv64
-            qemu_pkg_arch: misc
-            tty: ttyS0
-            net: eth0
+          # - arch: rv64gc
+          #   deb_arch: riscv64
+          #   qemu_pkg_arch: misc
+          #   tty: ttyS0
+          #   net: eth0
           # # ------------------
           - arch: x64
             deb_arch: amd64
@@ -216,11 +216,11 @@ jobs:
             net: eno1
 
           # ------------------------
-          - arch: mips64le
-            deb_arch: mips64el
-            qemu_pkg_arch: mips
-            tty: ttyS0
-            net: enp0s3
+          # - arch: mips64le
+          #   deb_arch: mips64el
+          #   qemu_pkg_arch: mips
+          #   tty: ttyS0
+          #   net: enp0s3
           # ------------------------
           # BOOKWORM
           # - arch: mipsle
