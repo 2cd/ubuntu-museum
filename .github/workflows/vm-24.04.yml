@@ -149,9 +149,9 @@ env:
   # ROOTFS_REPO: "ubuntu:mantic-"
   #
   # [noble]
-  # RELEASE_TAG: "24.04"
-  # CODENAME: "noble"
-  # ROOTFS_REPO: "ubuntu:noble-"
+  RELEASE_TAG: "24.04"
+  CODENAME: "noble"
+  ROOTFS_REPO: "ubuntu:noble-"
 
 on:
   push:

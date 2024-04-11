@@ -109,9 +109,9 @@ env:
   # ROOTFS_REPO: "ubuntu:eoan-"
   #
   # [focal]
-  # RELEASE_TAG: "20.04"
-  # CODENAME: "focal"
-  # ROOTFS_REPO: "ubuntu:focal-"
+  RELEASE_TAG: "20.04"
+  CODENAME: "focal"
+  ROOTFS_REPO: "ubuntu:focal-"
   #
   # [groovy]
   # RELEASE_TAG: "20.10"

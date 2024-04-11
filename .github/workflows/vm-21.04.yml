@@ -119,9 +119,9 @@ env:
   # ROOTFS_REPO: "ubuntu:groovy-"
   #
   # [hirsute]
-  # RELEASE_TAG: "21.04"
-  # CODENAME: "hirsute"
-  # ROOTFS_REPO: "ubuntu:hirsute-"
+  RELEASE_TAG: "21.04"
+  CODENAME: "hirsute"
+  ROOTFS_REPO: "ubuntu:hirsute-"
   #
   # [impish]
   # RELEASE_TAG: "21.10"

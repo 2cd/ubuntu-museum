@@ -147,6 +147,100 @@
 > - [Debian Museum](https://github.com/2cd/debian-museum/)
 > - [distro-info-data/ubuntu.csv](https://debian.pages.debian.net/distro-info-data/ubuntu.csv)
 
+## Virtual Machine
+
+> PLEASE NOTE: THIS IS A WIP (WORK IN PORGESS)
+
+Unlike container images, which offer almost all versions, the lowest version offered by VM images is 15.04, not 4.04.
+
+### Example 1 (jammy x64)
+
+#### 1.1 install qemu-x86 & zsh
+
+On Ubuntu, Mint, Kali ...
+
+```sh
+# run apt as root (e.g., sudo apt update)
+apt update
+apt install qemu-system-x86 zsh zstd
+```
+
+#### 1.2 download image
+
+```sh
+mkdir -p 22.04/x64
+cd 22.04
+url='https://github.com/2cd/ubuntu-museum/releases/download/22.04/vm-minimal_jammy_x64.tar.zst'
+curl -LO "$url"
+cd x64
+tar -xvf ../vm-minimal_jammy_x64.tar.zst
+```
+
+#### 1.3 expand disk
+
+> If you have enough disk space then `+3G` can be changed to `+10G`
+
+```sh
+qemu-img resize disk.img +3G
+```
+
+#### 1.4 run
+
+```sh
+./run
+```
+
+### Example 2 (noble arm64)
+
+#### 2.1 install qemu-aarch64 & zsh
+
+Android Termux
+
+```sh
+pkg i qemu-system-aarch64-headless zsh
+```
+
+Ubuntu
+
+```sh
+# Run apt as root (i.e., +sudo/+doas)
+apt install qemu-system-arm zsh
+```
+
+#### 2.2 download image
+
+```sh
+cd /sdcard/Download || cd ~/Downloads
+
+mkdir -p 24.04/arm64
+cd 24.04/arm64
+
+url='https://github.com/2cd/ubuntu-museum/releases/download/24.04/vm-minimal_noble_arm64.tar.zst'
+aria2c -s5 -x5 --no-conf -o noble-vm.tzst "$url" || curl -Lo noble-vm.tzst "$url"
+
+tar -xvf noble-vm.tzst
+```
+
+#### 2.3 expand disk
+
+```sh
+qemu-img resize disk.img +1G
+```
+
+#### 2.4 run
+
+```sh
+./run
+```
+
+### Example 3 (Running focal x64 VM via docker)
+
+```sh
+tag=focal-minimal-x64
+# tag=focal-minimal-arm64
+docker run -it --name focal-kvm --device /dev/kvm ghcr.io/2cd/ubuntu-vm:$tag
+```
+
 ## Container
 
 ### docker

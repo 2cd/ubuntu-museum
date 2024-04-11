@@ -64,9 +64,9 @@ env:
   # ROOTFS_REPO: "ubuntu:vivid-"
   #
   # [wily]
-  # RELEASE_TAG: "15.10"
-  # CODENAME: "wily"
-  # ROOTFS_REPO: "ubuntu:wily-"
+  RELEASE_TAG: "15.10"
+  CODENAME: "wily"
+  ROOTFS_REPO: "ubuntu:wily-"
   #
   # [xenial]
   # RELEASE_TAG: "16.04"

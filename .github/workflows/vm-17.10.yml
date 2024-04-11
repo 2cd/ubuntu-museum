@@ -84,9 +84,9 @@ env:
   # ROOTFS_REPO: "ubuntu:zesty-"
   #
   # [artful]
-  # RELEASE_TAG: "17.10"
-  # CODENAME: "artful"
-  # ROOTFS_REPO: "ubuntu:artful-"
+  RELEASE_TAG: "17.10"
+  CODENAME: "artful"
+  ROOTFS_REPO: "ubuntu:artful-"
   #
   # [bionic]
   # RELEASE_TAG: "18.04"

@@ -99,9 +99,9 @@ env:
   # ROOTFS_REPO: "ubuntu:cosmic-"
   #
   # [disco]
-  # RELEASE_TAG: "19.04"
-  # CODENAME: "disco"
-  # ROOTFS_REPO: "ubuntu:disco-"
+  RELEASE_TAG: "19.04"
+  CODENAME: "disco"
+  ROOTFS_REPO: "ubuntu:disco-"
   #
   # [eoan]
   # RELEASE_TAG: "19.10"

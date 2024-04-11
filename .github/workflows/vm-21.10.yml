@@ -124,9 +124,9 @@ env:
   # ROOTFS_REPO: "ubuntu:hirsute-"
   #
   # [impish]
-  # RELEASE_TAG: "21.10"
-  # CODENAME: "impish"
-  # ROOTFS_REPO: "ubuntu:impish-"
+  RELEASE_TAG: "21.10"
+  CODENAME: "impish"
+  ROOTFS_REPO: "ubuntu:impish-"
   #
   # [jammy]
   # RELEASE_TAG: "22.04"

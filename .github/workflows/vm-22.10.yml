@@ -134,9 +134,9 @@ env:
   # ROOTFS_REPO: "ubuntu:jammy-"
   #
   # [kinetic]
-  # RELEASE_TAG: "22.10"
-  # CODENAME: "kinetic"
-  # ROOTFS_REPO: "ubuntu:kinetic-"
+  RELEASE_TAG: "22.10"
+  CODENAME: "kinetic"
+  ROOTFS_REPO: "ubuntu:kinetic-"
   #
   # [lunar]
   # RELEASE_TAG: "23.04"

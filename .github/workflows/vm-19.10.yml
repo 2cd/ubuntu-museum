@@ -104,9 +104,9 @@ env:
   # ROOTFS_REPO: "ubuntu:disco-"
   #
   # [eoan]
-  # RELEASE_TAG: "19.10"
-  # CODENAME: "eoan"
-  # ROOTFS_REPO: "ubuntu:eoan-"
+  RELEASE_TAG: "19.10"
+  CODENAME: "eoan"
+  ROOTFS_REPO: "ubuntu:eoan-"
   #
   # [focal]
   # RELEASE_TAG: "20.04"

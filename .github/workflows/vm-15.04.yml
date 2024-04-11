@@ -59,9 +59,9 @@ env:
   OS: ubuntu
 
   # [vivid]
-  # RELEASE_TAG: "15.04"
-  # CODENAME: "vivid"
-  # ROOTFS_REPO: "ubuntu:vivid-"
+  RELEASE_TAG: "15.04"
+  CODENAME: "vivid"
+  ROOTFS_REPO: "ubuntu:vivid-"
   #
   # [wily]
   # RELEASE_TAG: "15.10"

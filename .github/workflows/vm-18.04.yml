@@ -89,9 +89,9 @@ env:
   # ROOTFS_REPO: "ubuntu:artful-"
   #
   # [bionic]
-  # RELEASE_TAG: "18.04"
-  # CODENAME: "bionic"
-  # ROOTFS_REPO: "ubuntu:bionic-"
+  RELEASE_TAG: "18.04"
+  CODENAME: "bionic"
+  ROOTFS_REPO: "ubuntu:bionic-"
   #
   # [cosmic]
   # RELEASE_TAG: "18.10"

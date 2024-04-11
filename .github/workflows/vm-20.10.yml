@@ -114,9 +114,9 @@ env:
   # ROOTFS_REPO: "ubuntu:focal-"
   #
   # [groovy]
-  # RELEASE_TAG: "20.10"
-  # CODENAME: "groovy"
-  # ROOTFS_REPO: "ubuntu:groovy-"
+  RELEASE_TAG: "20.10"
+  CODENAME: "groovy"
+  ROOTFS_REPO: "ubuntu:groovy-"
   #
   # [hirsute]
   # RELEASE_TAG: "21.04"
