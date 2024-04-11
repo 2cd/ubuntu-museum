@@ -69,14 +69,14 @@ env:
   # ROOTFS_REPO: "ubuntu:xenial-"
   #
   # [yakkety]
-  RELEASE_TAG: "16.10"
-  CODENAME: "yakkety"
-  ROOTFS_REPO: "ubuntu:yakkety-"
+  # RELEASE_TAG: "16.10"
+  # CODENAME: "yakkety"
+  # ROOTFS_REPO: "ubuntu:yakkety-"
   #
   # [zesty]
-  # RELEASE_TAG: "17.04"
-  # CODENAME: "zesty"
-  # ROOTFS_REPO: "ubuntu:zesty-"
+  RELEASE_TAG: "17.04"
+  CODENAME: "zesty"
+  ROOTFS_REPO: "ubuntu:zesty-"
   #
   # [artful]
   # RELEASE_TAG: "17.10"
