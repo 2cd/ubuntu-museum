@@ -1,4 +1,4 @@
-name: minimal virtual machine
+name: vm 24.04
 # auto-task.start-build-time = ?
 
 env:
@@ -157,7 +157,7 @@ on:
   push:
     # branches: ["build"]
     paths:
-      - .github/workflows/vm-minimal.yml
+      - .github/workflows/vm-24.04.yml
 jobs:
   build:
     strategy:
