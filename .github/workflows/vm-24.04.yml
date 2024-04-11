@@ -172,23 +172,23 @@ jobs:
           #   net: enp0s1
           # # ------------------
           # SID
-        #   - arch: rv64gc
-        #     deb_arch: riscv64
-        #     qemu_pkg_arch: misc
-        #     tty: ttyS0
-        #     net: eth0
-        #   # # ------------------
-        #   - arch: x64
-        #     deb_arch: amd64
-        #     qemu_pkg_arch: x86
-        #     tty: ttyS0
-        #     net: enp0s2
+          - arch: rv64gc
+            deb_arch: riscv64
+            qemu_pkg_arch: misc
+            tty: ttyS0
+            net: eth0
+          # # ------------------
+          - arch: x64
+            deb_arch: amd64
+            qemu_pkg_arch: x86
+            tty: ttyS0
+            net: enp0s2
 
-        #   - arch: arm64
-        #     deb_arch: arm64
-        #     qemu_pkg_arch: arm
-        #     tty: ttyAMA0
-        #     net: enp0s1
+          - arch: arm64
+            deb_arch: arm64
+            qemu_pkg_arch: arm
+            tty: ttyAMA0
+            net: enp0s1
 
           - arch: armv7a
             deb_arch: armhf
@@ -196,24 +196,24 @@ jobs:
             tty: ttyAMA0
             net: enp0s1
 
-        #   - arch: x86
-        #     deb_arch: i386
-        #     qemu_pkg_arch: x86
-        #     tty: ttyS0
-        #     net: ens3
+          - arch: x86
+            deb_arch: i386
+            qemu_pkg_arch: x86
+            tty: ttyS0
+            net: ens3
 
-        #   - arch: ppc64le
-        #     deb_arch: ppc64el
-        #     qemu_pkg_arch: ppc
-        #     tty: hev0
-        #     net: enp0s0
+          - arch: ppc64le
+            deb_arch: ppc64el
+            qemu_pkg_arch: ppc
+            tty: hev0
+            net: enp0s0
 
-        #   - arch: s390x
-        #     deb_arch: s390x
-        #     qemu_pkg_arch: misc
-        #     tty: ttysclp0
-        #     #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
-        #     net: eno1
+          - arch: s390x
+            deb_arch: s390x
+            qemu_pkg_arch: misc
+            tty: ttysclp0
+            #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
+            net: eno1
 
           # ------------------------
           # - arch: mips64le
@@ -389,15 +389,15 @@ jobs:
 
       - name: copy newer GNU-parted to old-old system
         run: |
-            # Note: outputs.name = stretch => ubuntu 16.04 ~ 17.10
-            case ${{steps.codename.outputs.name}} {
-              (jessie|stretch)
-                case ${{env.CODENAME}} {
-                  (stretch|zesty|artful) exit 0;;
-                } ;;
-              (*) exit 0;;
-            }
-            docker run --rm -v $PWD/rootfs/var/lib/:/host ghcr.io/2cd/pkgs:parted-${{matrix.arch}} cp -a /var/lib/tmm /host
+          # Note: outputs.name = stretch => ubuntu 16.04 ~ 17.10
+          case ${{steps.codename.outputs.name}} {
+            (jessie|stretch)
+              case ${{env.CODENAME}} {
+                (stretch|zesty|artful) exit 0;;
+              } ;;
+            (*) exit 0;;
+          }
+          docker run --rm -v $PWD/rootfs/var/lib/:/host ghcr.io/2cd/pkgs:parted-${{matrix.arch}} cp -a /var/lib/tmm /host
 
       - name: setup ssh server
         run: |
@@ -855,4 +855,3 @@ jobs:
           platforms: ${{steps.set_runner_arch.outputs.platform}}
           build-args: |
             RUNNER_ARCH=${{steps.set_runner_arch.outputs.runner_arch}}
-
