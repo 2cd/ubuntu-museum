@@ -54,14 +54,14 @@ env:
   OS: ubuntu
 
   # [vivid]
-  RELEASE_TAG: "15.04"
-  CODENAME: "vivid"
-  ROOTFS_REPO: "ubuntu:vivid-"
+  # RELEASE_TAG: "15.04"
+  # CODENAME: "vivid"
+  # ROOTFS_REPO: "ubuntu:vivid-"
   #
   # [wily]
-  # RELEASE_TAG: "15.10"
-  # CODENAME: "wily"
-  # ROOTFS_REPO: "ubuntu:wily-"
+  RELEASE_TAG: "15.10"
+  CODENAME: "wily"
+  ROOTFS_REPO: "ubuntu:wily-"
   #
   # [xenial]
   # RELEASE_TAG: "16.04"
@@ -203,33 +203,14 @@ jobs:
             tty: hev0
             net: enp0s0
 
-          - arch: s390x
-            deb_arch: s390x
-            qemu_pkg_arch: misc
-            tty: ttysclp0
-            #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
-            net: eno1
+          # - arch: s390x
+          #   deb_arch: s390x
+          #   qemu_pkg_arch: misc
+          #   tty: ttysclp0
+          #   #  net:bookworm+ => eno1, bullseye => enP1p0s0, stretch => enp0s0
+          #   net: eno1
 
-          # # ------------------------
-          # - arch: mips64le
-          #   deb_arch: mips64el
-          #   qemu_pkg_arch: mips
-          #   tty: ttyS0
-          #   net: enp0s3
-          # # ------------------------
-          # # BOOKWORM
-          # - arch: mipsle
-          #   deb_arch: mipsel
-          #   qemu_pkg_arch: mips
-          #   tty: ttyS0
-          #   net: enp0s18
-          # # ------------------------
-          # # BUSTER
-          # - arch: mipsbe
-          #   deb_arch: mips
-          #   qemu_pkg_arch: mips
-          #   tty: ttyS0
-          #   net: enp0s18
+          # # ---------------------
 
     runs-on: ubuntu-latest
     env:
