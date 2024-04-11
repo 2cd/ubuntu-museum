@@ -14,7 +14,7 @@ env:
   # RELEASE_TAG: unstable
   # CODENAME: sid
   # ROOTFS_REPO: "debian-sid:"
-  #
+  # #
   # [trixie]
   # RELEASE_TAG: 13
   # CODENAME: "trixie"
@@ -165,18 +165,18 @@ jobs:
       matrix:
         include:
           # PORTS
-          - arch: loong64
-            deb_arch: loong64
-            qemu_pkg_arch: misc
-            tty: ttyS0
-            net: enp0s1
+          # - arch: loong64
+          #   deb_arch: loong64
+          #   qemu_pkg_arch: misc
+          #   tty: ttyS0
+          #   net: enp0s1
           # # ------------------
           # SID
-          - arch: rv64gc
-            deb_arch: riscv64
-            qemu_pkg_arch: misc
-            tty: ttyS0
-            net: eth0
+          # - arch: rv64gc
+          #   deb_arch: riscv64
+          #   qemu_pkg_arch: misc
+          #   tty: ttyS0
+          #   net: eth0
           # # ------------------
           - arch: x64
             deb_arch: amd64
@@ -216,11 +216,11 @@ jobs:
             net: eno1
 
           # ------------------------
-          - arch: mips64le
-            deb_arch: mips64el
-            qemu_pkg_arch: mips
-            tty: ttyS0
-            net: enp0s3
+          # - arch: mips64le
+          #   deb_arch: mips64el
+          #   qemu_pkg_arch: mips
+          #   tty: ttyS0
+          #   net: enp0s3
           # ------------------------
           # BOOKWORM
           # - arch: mipsle
@@ -581,6 +581,7 @@ jobs:
             systemd-nspawn -E "${{env.DEB_ENV}}" -D rootfs zsh -fex /install-sshd.zsh
             systemd-nspawn -D rootfs unlink /install-sshd.zsh
             cp -a rootfs no-kernel
+
             systemd-nspawn -D rootfs sh -c "apt-install linux-image-${{matrix.deb_arch}}"
             cd rootfs
             ls -lh . boot
@@ -602,12 +603,13 @@ jobs:
           cp -a kernel_r/boot .
           ls -lh kernel_r kernel_r/boot
           cd boot
+          rm *.old ||:
           vmlinuz=(vmlinu*-*-*)
-          mv $vmlinuz[1] vmlinuz
+          mv -vf $vmlinuz[1] vmlinuz
           initrd=(initrd.img-*-*)
-          mv $initrd[1] initrd.img
-          ls -lh boot
-
+          mv -vf $initrd[1] initrd.img
+          ls -lh
+          cd ..
           ${{env.new_task}} 'sudo systemd-nspawn -bD rootfs'
           sleep 2
           while {! ${{env.SSH_VM}} exit} {

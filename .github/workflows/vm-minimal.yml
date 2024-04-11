@@ -11,9 +11,9 @@ env:
   new_task: "tmux new-session -d"
   #
   # [sid]
-  # RELEASE_TAG: unstable
-  # CODENAME: sid
-  # ROOTFS_REPO: "debian-sid:"
+  RELEASE_TAG: unstable
+  CODENAME: sid
+  ROOTFS_REPO: "debian-sid:"
   #
   # [trixie]
   # RELEASE_TAG: 13
@@ -56,7 +56,7 @@ env:
   # 22.04 jammy,  22.10 kinetic, 23.04 lunar,   23.10 mantic
   # 24.04 noble" | awk -F', ' '{for(i=1;i<=NF;i++){split($i,a," "); print "["a[2]"]\nRELEASE_TAG: \""a[1]"\"\nCODENAME: \""a[2]"\"\nROOTFS_REPO: \"ubuntu:"a[2]"-\"\n"}}'
   #
-  OS: ubuntu
+  # OS: ubuntu
 
   # [vivid]
   # RELEASE_TAG: "15.04"
@@ -165,11 +165,11 @@ jobs:
       matrix:
         include:
           # PORTS
-          - arch: loong64
-            deb_arch: loong64
-            qemu_pkg_arch: misc
-            tty: ttyS0
-            net: enp0s1
+          # - arch: loong64
+          #   deb_arch: loong64
+          #   qemu_pkg_arch: misc
+          #   tty: ttyS0
+          #   net: enp0s1
           # # ------------------
           # SID
           - arch: rv64gc
@@ -216,11 +216,11 @@ jobs:
             net: eno1
 
           # ------------------------
-          - arch: mips64le
-            deb_arch: mips64el
-            qemu_pkg_arch: mips
-            tty: ttyS0
-            net: enp0s3
+          # - arch: mips64le
+          #   deb_arch: mips64el
+          #   qemu_pkg_arch: mips
+          #   tty: ttyS0
+          #   net: enp0s3
           # ------------------------
           # BOOKWORM
           # - arch: mipsle
@@ -581,6 +581,7 @@ jobs:
             systemd-nspawn -E "${{env.DEB_ENV}}" -D rootfs zsh -fex /install-sshd.zsh
             systemd-nspawn -D rootfs unlink /install-sshd.zsh
             cp -a rootfs no-kernel
+
             systemd-nspawn -D rootfs sh -c "apt-install linux-image-${{matrix.deb_arch}}"
             cd rootfs
             ls -lh . boot
@@ -602,12 +603,13 @@ jobs:
           cp -a kernel_r/boot .
           ls -lh kernel_r kernel_r/boot
           cd boot
+          rm *.old ||:
           vmlinuz=(vmlinu*-*-*)
-          mv $vmlinuz[1] vmlinuz
+          mv -vf $vmlinuz[1] vmlinuz
           initrd=(initrd.img-*-*)
-          mv $initrd[1] initrd.img
-          ls -lh boot
-
+          mv -vf $initrd[1] initrd.img
+          ls -lh
+          cd ..
           ${{env.new_task}} 'sudo systemd-nspawn -bD rootfs'
           sleep 2
           while {! ${{env.SSH_VM}} exit} {
