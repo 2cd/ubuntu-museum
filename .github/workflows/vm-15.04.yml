@@ -157,7 +157,7 @@ on:
   push:
     # branches: ["build"]
     paths:
-      - .github/workflows/vm-minimal.yml
+      - .github/workflows/vm-15.04.yml
 jobs:
   build:
     strategy:
