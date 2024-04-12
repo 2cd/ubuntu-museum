@@ -233,6 +233,14 @@ qemu-img resize disk.img +1G
 zsh run
 ```
 
+#### 2.5 ssh
+
+Open a new terminal session and run the following command.
+
+```sh
+zsh connect-to-ssh
+```
+
 ### Example 3 (Running jammy x64 VM via docker)
 
 ```sh
