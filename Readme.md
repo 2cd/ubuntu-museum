@@ -151,7 +151,7 @@
 
 > PLEASE NOTE: THIS IS A WIP (WORK IN PORGESS)
 
-Unlike container images, which offer almost all versions, the lowest version offered by VM images is 15.04, not 4.04.
+Unlike container images, which offer almost all versions, the lowest version offered by VM images is **15.04**, not **4.10**.
 
 ### Example 1 (jammy x64)
 
