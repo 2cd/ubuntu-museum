@@ -230,7 +230,7 @@ qemu-img resize disk.img +1G
 #### 2.4 run
 
 ```sh
-./run
+zsh run
 ```
 
 ### Example 3 (Running jammy x64 VM via docker)
