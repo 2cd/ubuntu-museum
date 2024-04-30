@@ -24,11 +24,6 @@
         archs: "amd64  hppa  i386  powerpc  sparc",
         matrix: (arch: ["amd64", "hppa", "i386", "powerpc", "sparc"]),
     ),
-    "devel": (
-        ver: "unstable",
-        archs: "amd64  arm64  armhf  i386  ppc64el  riscv64  s390x",
-        matrix: (arch: ["amd64", "arm64", "armhf", "i386", "ppc64el", "riscv64", "s390x"]),
-    ),
     "disco": (
         ver: "19.04",
         archs: "amd64  arm64  armhf  i386  ppc64el  s390x",
@@ -143,6 +138,11 @@
         ver: "11.10",
         archs: "amd64  armel  i386  powerpc",
         matrix: (arch: ["amd64", "armel", "i386", "powerpc"]),
+    ),
+    "oracular": (
+        ver: "24.10",
+        archs: "amd64  arm64  armhf  i386  ppc64el  riscv64  s390x",
+        matrix: (arch: ["amd64", "arm64", "armhf", "i386", "ppc64el", "riscv64", "s390x"]),
     ),
     "precise": (
         ver: "12.04",

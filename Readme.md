@@ -142,12 +142,18 @@
 
 ---
 
+| version                                                          | codename        | created    | release    | eol        |
+| ---------------------------------------------------------------- | --------------- | ---------- | ---------- | ---------- |
+| [24.10](https://github.com/2cd/ubuntu-museum/releases/tag/24.10) | Oracular Oriole | 2024-04-25 | 2024-10-10 | 2025-07-10 |
+
+---
+
 > See also:
 >
 > - [Debian Museum](https://github.com/2cd/debian-museum/)
 > - [distro-info-data/ubuntu.csv](https://debian.pages.debian.net/distro-info-data/ubuntu.csv)
 
-## Virtual Machine
+<!-- ## Virtual Machine
 
 > PLEASE NOTE: THIS IS A WIP (WORK IN PORGESS)
 
@@ -247,7 +253,7 @@ zsh connect-to-ssh
 tag=jammy-minimal-x64
 # tag=jammy-minimal-arm64
 docker run -it --name jammy-kvm --device /dev/kvm ghcr.io/2cd/ubuntu-vm:$tag
-```
+``` -->
 
 ## Container
 
