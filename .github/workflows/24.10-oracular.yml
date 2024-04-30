@@ -1,6 +1,6 @@
 name: build (24.10, Oracular)
-on: { "push": { "paths": [".github/workflows/24.10-oracular.yml"] } }
-# on: { "schedule": [{ "cron": "24 10 */5 * *" }] }
+# on: { "push": { "paths": [".github/workflows/24.10-oracular.yml"] } }
+on: { "schedule": [{ "cron": "24 10 */5 * *" }] }
 #
 
 env:
