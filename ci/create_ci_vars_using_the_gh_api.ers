@@ -5,18 +5,18 @@
 //!
 //! ```cargo
 //! [dependencies]
-//! anyhow = "1.0.80"
+//! anyhow = "1.0.82"
 //! ron = "0.8.1"
-//! serde = { version = "1.0.197", features = ["derive"] }
-//! serde_json = "1.0.114"
-//! typed-builder = "0.18.1"
+//! serde = { version = "1.0.199", features = ["derive"] }
+//! serde_json = "1.0.116"
+//! typed-builder = "0.18.2"
 //! ```
 //
 
 /// If true, create vars (`--method POST`). If false, update vars (`--method PATCH`).
 const CREATE_VARS: bool = false;
 
-const RUN_GH: bool = true;
+const RUN_GH: bool = false;
 
 use anyhow::{bail, Context};
 use ron::ser::PrettyConfig;
@@ -36,6 +36,7 @@ use typed_builder::TypedBuilder;
 struct CI {
     // #[builder(setter(into))]
     // name: String,
+    //
     #[builder(setter(into))]
     ver: String,
 
@@ -83,7 +84,7 @@ fn main() -> anyhow::Result<()> {
     for (ron_file, ref file_content, gh_repo) in [
         ////
         (uuu_os_file, ubuntu_ron, "ubuntu-museum"),
-        // (deb_os_file, debian_ron, "debian-museum"),
+        (deb_os_file, debian_ron, "debian-museum"),
     ] {
         map.clear();
         let cfg = ron::from_str::<Cfg>(file_content)?;
@@ -175,29 +176,36 @@ fn run_gh(post_data: &PostData, repo_name: &str) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn get_os_ron_filename() -> Result<(&'static str, &'static str), anyhow::Error> {
+fn get_os_ron_filename() -> anyhow::Result<(&'static str, &'static str)> {
     const DEB: &str = "../debian-museum-ci/assets/os.ron";
     const UUU: &str = "ci/os.ron";
 
-    if [DEB, UUU]
-        .map(|p| Path::new(p).parent())
-        .iter()
-        .all(|f| f.is_some_and(|x| !x.exists()))
-    {
-        bail!(r#"parent("os.ron") was not found"#)
+    let err_msg = r#"parent("os.ron") was not found"#;
+
+    for parent in [DEB, UUU].map(|p| {
+        Path::new(p)
+            .parent()
+            .map_or(false, Path::exists)
+    }) {
+        if !parent {
+            bail!("{err_msg}")
+        }
     }
 
     Ok((DEB, UUU))
 }
 
-fn set_workdir() -> Result<(), io::Error> {
+fn set_workdir() -> io::Result<()> {
+    // let script_dir = Path::new(file!()).parent();
+
     if env::current_dir()?.ends_with("ci") {
         env::set_current_dir("..")?
-    };
+    }
+
     Ok(())
 }
 
-fn get_ron_content() -> Result<(String, String), anyhow::Error> {
+fn get_ron_content() -> anyhow::Result<(String, String)> {
     let cfg_path = Path::new("../debian-museum/crates/get-ctr/assets/debootstrap/");
     let cfg_dir = cfg_path
         .canonicalize()
@@ -205,7 +213,7 @@ fn get_ron_content() -> Result<(String, String), anyhow::Error> {
     dbg!(&cfg_dir);
 
     let debian_ron = fs::read_to_string(cfg_dir.join("debian.ron"))
-        .context("Failed to open debian-museum::debian.ron")?;
+        .context("Failed to read debian-museum::debian.ron")?;
     // dbg!(&debian_ron);
 
     let ubuntu_ron = fs::read_to_string(cfg_dir.join("ubuntu.ron"))?;
@@ -215,9 +223,22 @@ fn get_ron_content() -> Result<(String, String), anyhow::Error> {
     Ok((debian_ron, ubuntu_ron))
 }
 
-/// runs the process and specify stdin
+fn custom_io_error(msg: &str) -> io::Error {
+    io::Error::new(io::ErrorKind::Other, msg)
+}
+
+/// Runs the process and specify stdin
 ///
-/// This is equivalent to: `print stdin_data | cmd args`
+/// This is equivalent to: `cat stdin_data | cmd args`
+///
+/// # Example
+///
+/// ```no_run
+/// // equivalent to: printf "L-1\nL-2\n" | wc -l
+/// #[cfg(unix)]
+/// run("wc", &["-l"], "L-1\nL-2\n".as_bytes());
+/// // output: 2
+/// ```
 fn run<A, S>(cmd: S, args: &[A], stdin_data: &[u8]) -> io::Result<ExitStatus>
 where
     A: AsRef<OsStr>,
@@ -231,7 +252,7 @@ where
     child
         .stdin
         .as_mut()
-        .ok_or_else(|| io::Error::new(io::ErrorKind::Other, "Failed to get stdin"))?
+        .ok_or_else(|| custom_io_error("Failed to get stdin"))?
         .write_all(stdin_data)?;
 
     child.wait()
