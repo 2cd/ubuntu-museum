@@ -294,7 +294,7 @@ We can create a disposable container:
 docker run -it --rm -e LANG=$LANG ghcr.io/2cd/ubuntu:24.04
 ```
 
-We can also specify the architecture (platform) of the container, but we need to install `qemu-user-static` fisrst. It will automatically configure `binfmt_misc` for us.
+We can also specify the architecture (platform) of the container, but we need to install `qemu-user-static` first. It will automatically configure `binfmt_misc` for us.
 
 ```sh
 # run apt as root (i.e., +sudo/doas)
