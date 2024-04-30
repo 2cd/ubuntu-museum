@@ -179,10 +179,8 @@ fn get_os_ron_filename() -> Result<(&'static str, &'static str), anyhow::Error> 
     const DEB: &str = "../debian-museum-ci/assets/os.ron";
     const UUU: &str = "ci/os.ron";
 
-    let deb_os_file = Path::new(DEB);
-    let uuu_os_file = Path::new(UUU);
-
-    if [deb_os_file.parent(), uuu_os_file.parent()]
+    if [DEB, UUU]
+        .map(|p| Path::new(p).parent())
         .iter()
         .all(|f| f.is_some_and(|x| !x.exists()))
     {
