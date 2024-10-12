@@ -16,7 +16,7 @@
 /// If true, create vars (`--method POST`). If false, update vars (`--method PATCH`).
 const CREATE_VARS: bool = false;
 
-const RUN_GH: bool = false;
+const RUN_GH: bool = true;
 
 use anyhow::{bail, Context};
 use ron::ser::PrettyConfig;
@@ -84,7 +84,7 @@ fn main() -> anyhow::Result<()> {
     for (ron_file, ref file_content, gh_repo) in [
         ////
         (uuu_os_file, ubuntu_ron, "ubuntu-museum"),
-        (deb_os_file, debian_ron, "debian-museum"),
+        // (deb_os_file, debian_ron, "debian-museum"),
     ] {
         map.clear();
         let cfg = ron::from_str::<Cfg>(file_content)?;
