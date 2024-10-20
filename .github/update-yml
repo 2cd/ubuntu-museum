@@ -53,28 +53,39 @@ if [[ $OS == ubuntu ]] {
         # quantal  "12.10"
         # raring   "13.04"
         # saucy    "13.10"
-        trusty   "14.04"
+        #
+        # trusty   "14.04"
+        #
         # utopic   "14.10"
         # vivid    "15.04"
         # wily     "15.10"
-        xenial   "16.04"
+        #
+        # xenial   "16.04"
+        #
         # yakkety  "16.10"
         # zesty    "17.04"
         # artful   "17.10"
-        bionic   "18.04"
+        #
+        # bionic   "18.04"
+        #
         # cosmic   "18.10"
         # disco    "19.04"
         # eoan     "19.10"
-        focal    "20.04"
+        #
+        # focal    "20.04"
+        #
         # groovy   "20.10"
         # hirsute  "21.04"
         # impish   "21.10"
-        jammy    "22.04"
+        #
+        # jammy    "22.04"
+        #
         # kinetic  "22.10"
         # lunar    "23.04"
-        mantic   "23.10"
+        # mantic   "23.10"
         noble    "24.04"
         oracular "24.10"
+        plucky   "25.04"
     )
 }
 # --------------
@@ -90,6 +101,16 @@ debug() {
 }
 io::Error::not_found() {
     error "I/O Error, '$1' was not found."
+}
+
+# -> SedEnum("gsed"|"sed")
+# if is_macOS {"gsed"} else {"sed"}
+get_sed_cmd() {
+    case $(uname -s) {
+        # macOS
+        (Darwin) print gsed ;;
+        (*) print sed ;;
+    }
 }
 # --------------
 debug $(local -p ver_map)
@@ -173,5 +194,6 @@ for series ver (${(kv)ver_map}) {
     args+=$tmpl
 
     debug "%F{green}sed %f$args"
-    sed $args > $new_file
+
+    $(get_sed_cmd) $args > $new_file
 }

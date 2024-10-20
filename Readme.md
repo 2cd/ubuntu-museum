@@ -145,6 +145,7 @@
 | version                                                          | codename        | created    | release    | eol        |
 | ---------------------------------------------------------------- | --------------- | ---------- | ---------- | ---------- |
 | [24.10](https://github.com/2cd/ubuntu-museum/releases/tag/24.10) | Oracular Oriole | 2024-04-25 | 2024-10-10 | 2025-07-10 |
+| [25.04](https://github.com/2cd/ubuntu-museum/releases/tag/25.04) | Plucky Puffin   | 2024-10-10 | 2025-04-17 | 2026-01-15 |
 
 ---
 

@@ -1,6 +1,10 @@
 name: build (24.04, Noble)
-on: { "push": { "paths": [".github/workflows/24.04-noble.yml"] } }
-# on: { "schedule": [{ "cron": "24 4 */3 * *" }] }
+# auto-task.build-time = ?
+on:
+  {
+    "push": { "paths": [".github/workflows/24.04-noble.yml"] },
+    "schedule": [{ "cron": "24 4 */7 * *" }],
+  }
 
 env:
   DEBIAN_FRONTEND: noninteractive
@@ -63,7 +67,7 @@ jobs:
         if: steps.build_and_save_cache.outcome == 'failure'
         run: sh run.sh --compatibility-mode
 
-# --------------------------------------
+  # --------------------------------------
   docker:
     needs: build
     runs-on: ubuntu-latest

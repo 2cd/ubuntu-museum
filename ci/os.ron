@@ -144,6 +144,11 @@
         archs: "amd64  arm64  armhf  i386  ppc64el  riscv64  s390x",
         matrix: (arch: ["amd64", "arm64", "armhf", "i386", "ppc64el", "riscv64", "s390x"]),
     ),
+    "plucky": (
+        ver: "25.04",
+        archs: "amd64  arm64  armhf  i386  ppc64el  riscv64  s390x",
+        matrix: (arch: ["amd64", "arm64", "armhf", "i386", "ppc64el", "riscv64", "s390x"]),
+    ),
     "precise": (
         ver: "12.04",
         archs: "amd64  armel  armhf  i386  powerpc",
