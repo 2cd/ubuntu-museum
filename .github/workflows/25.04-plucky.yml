@@ -1,0 +1,141 @@
+name: build (25.04, Plucky)
+# auto-task.build-time = ?
+on:
+  {
+    "push": { "paths": [".github/workflows/25.04-plucky.yml"] },
+    "schedule": [{ "cron": "25 04 */5 * *" }],
+  }
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+  GET_CTR_LOG: debug
+  ZSTD_LV: 18
+  ARCHS: ${{ fromJson(vars.PLUCKY_JSON).archs }}
+  BUILD_CMD: get-ctr --os ${{vars.OS}} --ver ${{fromJson(vars.PLUCKY_JSON).ver}}
+
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+      matrix: ${{ fromJson(vars.PLUCKY_JSON).matrix }}
+      # matrix:
+      #   arch:
+      #     - amd64
+      #     - arm64
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: zsh --pipefail -fex {0}
+    steps:
+      - name: install zsh
+        shell: sh -e {0}
+        run: ${{ vars.INSTALL_ZSH }}
+
+      - name: preparations
+        run: |
+          ${{vars.GET_CTR_CMD}}
+          ${{vars.INSTALL_QEMU_AND_DEBOOTSTRAP}}
+
+      - name: Login to REG
+        uses: docker/login-action@v3
+        with:
+          registry: ${{vars.REG_URI}}
+          username: ${{vars.REG_USER}}
+          password: ${{ secrets.DEB_UUU_TOKEN }}
+
+      - name: build & repack rootfs & save cache
+        continue-on-error: true
+        id: build_and_save_cache
+        run: |
+          extra_args=(
+            --arch
+            ${{matrix.arch}}
+            --obtain
+            --repack
+            --zstd-level ${{env.ZSTD_LV}}
+            --save-cache
+          )
+          case ${{matrix.arch}} {
+            (amd64) extra_args+=(
+              --auto-add-extra-suites
+            )
+          }
+          print -R ${{env.BUILD_CMD}} $extra_args \"\$@\" > run.sh
+          ${{env.BUILD_CMD}} $extra_args
+
+      - name: compatibility-mode
+        if: steps.build_and_save_cache.outcome == 'failure'
+        run: sh run.sh --compatibility-mode
+
+  # --------------------------------------
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+    # defaults:
+    #   run:
+    #     shell: zsh -fe {0}
+    env:
+      digests_ron: digests.ron
+      digests_yaml: digests.yml
+    steps:
+      - name: Login to REG
+        uses: docker/login-action@v3
+        with:
+          registry: ${{vars.REG_URI}}
+          username: ${{vars.REG_USER}}
+          password: ${{ secrets.DEB_UUU_TOKEN }}
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: get `get-ctr` bin from docker
+        run: ${{vars.GET_CTR_CMD}}
+
+      - name: install qemu-user & debootstrap
+        run: ${{vars.INSTALL_QEMU_AND_DEBOOTSTRAP}}
+
+      - name: restore cache
+        run: |
+          archs=( ${{env.ARCHS}} )
+          for arch in "${archs[@]}"; do
+            ${{env.BUILD_CMD}} --restore-cache --arch $arch
+            tree tmp
+          done
+
+      - name: build container
+        run: ${{env.BUILD_CMD}} --build
+
+      - name: push to ghcr & reg
+        run: ${{env.BUILD_CMD}} --push
+
+      - name: create manifest
+        run: ${{env.BUILD_CMD}} --create-manifest --update-repo-digest
+
+      - name: generate digests.{ron,yml}
+        run: ${{env.BUILD_CMD}} --digest ${{env.digests_ron}} --digest ${{env.digests_yaml}}
+
+      - name: create digests.md
+        run: |
+          echo '```yaml' > digests.md
+          cat tmp/${{env.digests_yaml}} >> digests.md
+          echo '```' >> digests.md
+          echo TITLE=$(${{env.BUILD_CMD}} --title) >>$GITHUB_ENV
+
+      - name: +RELEASE_TAG env
+        run: echo RELEASE_TAG=$(${{env.BUILD_CMD}} --release-tag) >>$GITHUB_ENV
+
+      - name: release
+        uses: softprops/action-gh-release@v2
+        with:
+          fail_on_unmatched_files: true
+          tag_name: ${{env.RELEASE_TAG}}
+          name: ${{env.TITLE}}
+          files: |
+            tmp/zstd/*.zst
+            tmp/${{env.digests_ron}}
+            tmp/${{env.digests_yaml}}
+          body_path: digests.md
