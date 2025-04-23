@@ -1,6 +1,6 @@
 name: build (22.04, Jammy)
-on: { "push": { "paths": [ ".github/workflows/22.04-jammy.yml" ] } }
-
+on: { "push": { "paths": [".github/workflows/22.04-jammy.yml"] } }
+#
 env:
   DEBIAN_FRONTEND: noninteractive
   GET_CTR_LOG: debug
